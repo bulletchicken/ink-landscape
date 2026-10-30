@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""A living, vector-native commit landscape. Python standard library only.
+"""A living, vector-native contribution landscape. Python standard library only.
 
 Procedural mountain contours and tapered brush strokes are adapted from
 Lingdong Huang's shan-shui-inf (MIT); see THIRD_PARTY_NOTICES.md.
@@ -67,12 +67,12 @@ def brush(parent, points, color=INK, width=.7, opacity=.3):
 
 
 def mountain(defs, month, index, peak):
-    count = month["commits"]
+    count = month["contributions"]
     height = max(7, MAX_HEIGHT * (count / peak) ** 2) if count else 0
     half = (45 + 130 * (count / peak) ** 1.15) * (.92 + .14 * noise(index, 17))
     node = add(defs, "g", {"id": f"mountain-{index}", "data-month": month["month"],
-               "data-commits": count, "data-height": f"{height:.5f}", "data-center": CENTER + index * SPACING})
-    add(node, "title", text=f'{month["month"]}: {count} commits')
+               "data-contributions": count, "data-height": f"{height:.5f}", "data-center": CENTER + index * SPACING})
+    add(node, "title", text=f'{month["month"]}: {count} contributions')
     if count:
         paint_mountain(defs, node, f"mountain-{index}", height, half, 743 + index * 91)
     return height
@@ -161,14 +161,14 @@ def decoration(defs):
 
 def month_labels(parent, month, index, peak_day):
     cx = CENTER + index * SPACING
-    node = add(parent, "g", {"data-label-month": month["month"], "data-commits": month["commits"], "data-center": cx,
+    node = add(parent, "g", {"data-label-month": month["month"], "data-contributions": month["contributions"], "data-center": cx,
                                       "transform": f"translate({cx} 0)"})
     first, last = [dt.date.fromisoformat(month["days"][i]["date"]) for i in [0, -1]]
     add(node, "path", {"d": "M0 622 L0 632 M-2 625 L0 623 L2 625", "stroke": ACCENT, "stroke-width": ".8", "fill": "none", "opacity": ".65"})
     label(node, 0, 654, first.strftime("%B %Y"), 19, INK, SERIF, "middle")
     label(node, 0, 675, f'{first.strftime("%b").upper()} {first.day:02d} — {last.day:02d}', 11, MUTED, anchor="middle", **{"letter-spacing": "1.4"})
-    label(node, -36, 714, f'{month["commits"]}', 30, INK, SERIF, "middle")
-    label(node, -36, 733, "COMMITS", 10, MUTED, anchor="middle", **{"letter-spacing": "1.5"})
+    label(node, -36, 714, f'{month["contributions"]}', 30, INK, SERIF, "middle")
+    label(node, -36, 733, "CONTRIBUTIONS", 8, MUTED, anchor="middle", **{"letter-spacing": ".6"})
     # A compact calendar travels beside each total, preserving daily detail.
     calendar = add(node, "g", {"data-calendar-month": month["month"]})
     first_of_month = first.replace(day=1)
@@ -176,12 +176,12 @@ def month_labels(parent, month, index, peak_day):
     for day in month["days"]:
         date = dt.date.fromisoformat(day["date"])
         slot = offset + date.day - 1
-        amount = day["commits"]
+        amount = day["contributions"]
         colors = GRID
         level = 0 if not amount else min(4, 1 + int(amount / max(1, peak_day) * 3.99))
         cell = add(calendar, "rect", {"x": 24 + (slot % 7) * 8, "y": 692 + (slot // 7) * 8,
-            "width": 6, "height": 6, "rx": 1, "fill": colors[level], "data-date": day["date"], "data-commits": amount})
-        add(cell, "title", text=f'{day["date"]}: {amount} commits')
+            "width": 6, "height": 6, "rx": 1, "fill": colors[level], "data-date": day["date"], "data-contributions": amount})
+        add(cell, "title", text=f'{day["date"]}: {amount} contributions')
 
 
 def render(data):
@@ -189,25 +189,25 @@ def render(data):
     months = OrderedDict()
     for day in data["days"]:
         key = day["date"][:7]
-        month = months.setdefault(key, {"month": key, "days": [], "commits": 0})
+        month = months.setdefault(key, {"month": key, "days": [], "contributions": 0})
         month["days"].append(day)
-        month["commits"] += day["commits"]
+        month["contributions"] += day["contributions"]
     months = list(months.values())
     if not months:
         raise ValueError("At least one day of activity is required.")
     PERIOD = len(months) * SPACING
-    peak_index = max(range(len(months)), key=lambda i: months[i]["commits"])
+    peak_index = max(range(len(months)), key=lambda i: months[i]["contributions"])
     START = (peak_index * SPACING + CENTER - 600) % PERIOD
     FAR_PERIOD, MID_PERIOD, SHORE_PERIOD = PERIOD / 4, PERIOD / 2, PERIOD * 1.25
-    total = sum(m["commits"] for m in months)
-    active = sum(d["commits"] > 0 for d in data["days"])
-    actual_peak = max(m["commits"] for m in months)
+    total = sum(m["contributions"] for m in months)
+    active = sum(d["contributions"] > 0 for d in data["days"])
+    actual_peak = max(m["contributions"] for m in months)
     peak = max(1, actual_peak)
-    peak_day = max(d["commits"] for d in data["days"])
+    peak_day = max(d["contributions"] for d in data["days"])
     root = ET.Element(f"{{{NS}}}svg", {"width": "1200", "height": "620", "viewBox": "0 0 1200 620", "role": "img", "aria-labelledby": "title desc"})
-    add(root, "title", {"id": "title"}, "Monthly commits — an ink mountain landscape")
-    scope = "fictional commits" if data.get("sample") else "public GitHub commit contributions"
-    add(root, "desc", {"id": "desc"}, f"{total:,} {scope} across {active} active days, from {data['start']} to {data['end']}. Main mountain height grows with squared monthly commits. Each date, count, and daily calendar travels with its mountain. Fainter cragged peaks use the same drawing at different depths. Brushwork trees, mist, reflections and river life are decorative. A fish jumps at a different spot every 7.5 seconds. The seamless scene repeats every 180 seconds. Reduced motion is supported.")
+    add(root, "title", {"id": "title"}, "Monthly contributions — an ink mountain landscape")
+    scope = "fictional contributions" if data.get("sample") else "GitHub profile contributions"
+    add(root, "desc", {"id": "desc"}, f"{total:,} {scope} across {active} active days, from {data['start']} to {data['end']}. Main mountain height grows with squared monthly contributions. Each date, count, and daily calendar travels with its mountain. Fainter cragged peaks use the same drawing at different depths. Brushwork trees, mist, reflections and river life are decorative. A fish jumps at a different spot every 3 seconds. The seamless scene repeats every 180 seconds. Reduced motion is supported.")
     defs = add(root, "defs")
     style = add(root, "style")
     # White paper extends to the edge; its sparse grain softly fades away.
@@ -252,7 +252,7 @@ def render(data):
     heights = []
     for index, month in enumerate(months):
         height = mountain(defs, month, index, peak)
-        heights.append({"month": month["month"], "commits": month["commits"], "height": height})
+        heights.append({"month": month["month"], "contributions": month["contributions"], "height": height})
         cx = CENTER + index * SPACING
         for delta in [-PERIOD, 0, PERIOD]:
             # Wrapped copies preserve shoulders that cross the timeline seam.
@@ -266,11 +266,11 @@ def render(data):
     rng = random.Random(391)
     for _ in range(310):
         add(paper, "circle", {"cx": f"{rng.uniform(0,1200):.1f}", "cy": f"{rng.uniform(0,620):.1f}", "r": f"{rng.uniform(.15,.55):.2f}", "fill": INK, "opacity": ".035"})
-    for x, number, caption, offset in [(50, f"{total:,}", "COMMITS", 70), (260, active, "ACTIVE DAYS", 53), (480, actual_peak, "PEAK MONTH", 53)]:
+    for x, number, caption, offset in [(50, f"{total:,}", "CONTRIBUTIONS", 70), (260, active, "ACTIVE DAYS", 53), (480, actual_peak, "PEAK MONTH", 53)]:
         label(root, x, 45, number, 25, font=SERIF)
         label(root, x + offset, 43, caption, 10, MUTED, **{"letter-spacing": 1.2})
     add(root, "rect", {"x": 1005, "y": 36, "width": 3, "height": 3, "fill": ACCENT, "opacity": ".8"})
-    label(root, 1150, 43, "SAMPLE ACTIVITY" if data.get("sample") else "PUBLIC COMMITS", 10, MUTED, anchor="end", **{"letter-spacing": 1.3})
+    label(root, 1150, 43, "SAMPLE ACTIVITY" if data.get("sample") else "GITHUB ACTIVITY", 10, MUTED, anchor="end", **{"letter-spacing": 1.3})
     composition = add(root, "g", {"transform": "translate(0 -165)"})
     scene = add(composition, "g", {"mask": "url(#scene-fade)"})
     background = add(scene, "g", {"clip-path": "url(#art-clip)"})
@@ -290,7 +290,7 @@ def render(data):
     water = add(foreground, "g")
     ambient_css = build_ambient(defs, weather, water)
     add(root, "line", {"x1": 50, "x2": 1150, "y1": 590, "y2": 590, "stroke": FINE, "opacity": ".24"})
-    label(root, 50, 609, "Monthly commits · taller peaks, busier months", 10, MUTED)
+    label(root, 50, 609, "Monthly contributions · taller peaks, busier months", 10, MUTED)
     date_range = " — ".join(dt.date.fromisoformat(data[key]).strftime("%d %b %Y").upper() for key in ("start", "end"))
     label(root, 1150, 609, date_range, 10, MUTED, anchor="end", **{"letter-spacing": ".8"})
     style.text = (CSS.replace("$START", str(-START)).replace("$END", str(-START - PERIOD))

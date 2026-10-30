@@ -1,4 +1,4 @@
-"""Quiet native SVG weather and river life for the dark ink landscape.
+"""Quiet native SVG weather and river life for the ink landscape.
 
 build_ambient(defs, background_group, water_group) appends SVG elements to
 the supplied ElementTree nodes and returns their CSS. No script, raster,
@@ -10,6 +10,11 @@ import xml.etree.ElementTree as ET
 
 NS = "http://www.w3.org/2000/svg"
 from palette import FISH as INK, WATER, CLOUD
+
+FISH_COUNT = 20
+FISH_PERIOD = 60
+FISH_INTERVAL = FISH_PERIOD / FISH_COUNT
+FISH_FIRST_JUMP = 1.5
 
 
 def _add(parent, tag, attrs=None, text=None):
@@ -156,20 +161,9 @@ def _river(water_group):
             })
 
 
-def _fish(water_group, x, y, direction, scale, index):
-    # A negative phase gives each fish its exact place in the first cycle
-    # too. Jumps begin at 3, 10.5, 18 and 25.5 seconds; flight stays 1.2s.
-    phase = (30 - index * 7.5) % 30
-    timing = f"animation-delay:-{phase:g}s"
-    anchor = _add(water_group, "g", {
-        "transform": f"translate({x} {y}) scale({direction*scale:g} {scale:g})",
-        "aria-hidden": "true", "data-ambient-layer": "occasional-fish",
-        "data-fish-index": index,
-    })
-    fish = _add(anchor, "g", {
-        "class": "ambient-motion ambient-fish", "opacity": "0",
-        "style": timing,
-    })
+def _fish_marks(defs):
+    """Share the fine brush shapes across every river position."""
+    fish = _add(defs, "g", {"id": "ambient-fish-body"})
     _add(fish, "path", {
         "d": "M6 0 C3.2 -2.2 .2 -2.4 -2.8 -.6 "
              "L-5.7 -2.6 L-4.9 0 L-5.7 2.5 L-2.8 .6 "
@@ -180,30 +174,20 @@ def _fish(water_group, x, y, direction, scale, index):
         "d": "M-.8 -1.2 L.4 -3.1 L2 -1.5 M.1 1.1 L-1 2.6 L2.1 1.3",
         "fill": INK, "opacity": ".7",
     })
-    takeoff = _add(anchor, "g", {
-        "class": "ambient-motion ambient-takeoff", "opacity": "0",
-        "style": timing,
-    })
+    takeoff = _add(defs, "g", {"id": "ambient-fish-takeoff"})
     _add(takeoff, "path", {
         "d": "M-6 0 Q-2 -1.6 3 -.5 M-5 1 Q0 2 5 .5",
         "fill": "none", "stroke": WATER, "stroke-width": ".65",
         "stroke-linecap": "round",
     })
-    splash_anchor = _add(anchor, "g", {"transform": "translate(48 0)"})
-    splash = _add(splash_anchor, "g", {
-        "class": "ambient-motion ambient-splash", "opacity": "0",
-        "style": timing,
-    })
+    splash = _add(defs, "g", {"id": "ambient-fish-landing"})
     _add(splash, "path", {
         "d": "M-9 0 C-7 -2.1 5 -2.7 9 -.1 M-8 .9 C-4 2.4 4 2.3 7 1 "
              "M-5 -.2 Q0 -1.3 4 -.3",
         "fill": "none", "stroke": INK, "stroke-width": ".6",
         "stroke-linecap": "round",
     })
-    droplets = _add(splash_anchor, "g", {
-        "class": "ambient-motion ambient-droplets", "opacity": "0",
-        "style": timing,
-    })
+    droplets = _add(defs, "g", {"id": "ambient-fish-droplets"})
     for d in ["M-3 -1 q-3 -2 -3.6 -4.5", "M1 -1 q0 -3 1 -5", "M4 0 q2 -1.4 3 -3"]:
         _add(droplets, "path", {
             "d": d, "fill": "none", "stroke": INK,
@@ -211,20 +195,59 @@ def _fish(water_group, x, y, direction, scale, index):
         })
 
 
+def _fish_locations():
+    """Twenty spread-out locations, ordered to avoid nearby successive jumps.
+
+    Stepping by seven visits every one of twenty horizontal slots before
+    repeating. Jitter, river depth, direction, and size remain deterministic.
+    Even the last-to-first transition crosses a substantial stretch of water.
+    """
+    rng = random.Random(9753)
+    for index in range(FISH_COUNT):
+        slot = (index * 7 + 13) % FISH_COUNT
+        x = 145 + slot * (910 / (FISH_COUNT - 1)) + rng.uniform(-8, 8)
+        y = 575 + ((index * 11) % 31) + rng.uniform(-1.8, 1.8)
+        scale = max(.74, min(1, .75 + (y - 573) / 34 * .23 + rng.uniform(-.025, .025)))
+        direction = -1 if index % 4 in (1, 2) else 1
+        yield round(x, 2), round(y, 2), direction, round(scale, 3)
+
+
+def _fish(water_group, x, y, direction, scale, index):
+    # Negative phases place all jumps correctly in the very first cycle.
+    # CSS uses a sixty-second clock; its two-percent flight still lasts 1.2s.
+    phase = (FISH_PERIOD - index * FISH_INTERVAL) % FISH_PERIOD
+    timing = f"animation-delay:-{phase:g}s"
+    anchor = _add(water_group, "g", {
+        "transform": f"translate({x} {y}) scale({direction*scale:g} {scale:g})",
+        "aria-hidden": "true", "data-ambient-layer": "occasional-fish",
+        "data-fish-index": index,
+        "data-fish-start": FISH_FIRST_JUMP + index * FISH_INTERVAL,
+    })
+    for class_name, mark, landing in [
+        ("ambient-fish", "ambient-fish-body", False),
+        ("ambient-takeoff", "ambient-fish-takeoff", False),
+        ("ambient-splash", "ambient-fish-landing", True),
+        ("ambient-droplets", "ambient-fish-droplets", True),
+    ]:
+        parent = _add(anchor, "g", {"transform": "translate(48 0)"}) if landing else anchor
+        animated = _add(parent, "g", {
+            "class": f"ambient-motion {class_name}", "opacity": "0", "style": timing,
+        })
+        _add(animated, "use", {"href": f"#{mark}"})
+
+
 def build_ambient(defs, background_group, water_group):
     """Append native SVG weather and river life, returning their CSS.
 
     The caller can crop/translate the scene: original local coordinates are
-    preserved (clouds y265..345, river marks y563..613). Four tiny fish jump
-    one at a time at 3, 10.5, 18 and 25.5 seconds of each 30-second cycle.
+    preserved (clouds y265..345, river marks y563..613). Tiny fish jump one
+    at a time every three seconds, visiting twenty positions per minute.
     Every flight takes 1.2 seconds. All motion repeats exactly at 180 seconds.
     """
     _clouds(defs, background_group)
     _river(water_group)
-    for index, (x, y, direction, scale) in enumerate([
-        (780, 585, 1, 1), (363, 601, -1, .9),
-        (1014, 576, -1, .82), (548, 593, 1, .94),
-    ]):
+    _fish_marks(defs)
+    for index, (x, y, direction, scale) in enumerate(_fish_locations()):
         _fish(water_group, x, y, direction, scale, index)
     return CSS
 
@@ -245,40 +268,40 @@ CSS = """
   0%,100% { transform:translate(-8px,0px) scaleX(.84); opacity:.07; }
   50% { transform:translate(12px,-.35px) scaleX(1.08); opacity:.27; }
 }
-.ambient-fish { animation:ambient-fish-jump 30s linear infinite; }
+.ambient-fish { animation:ambient-fish-jump 60s linear infinite; }
 @keyframes ambient-fish-jump {
-  0%,9.99% { opacity:0; transform:translate(0px,0px) rotate(-55deg); }
-  10% { opacity:0; transform:translate(0px,0px) rotate(-55deg); }
-  10.25% { opacity:.7; transform:translate(3px,-11px) rotate(-49deg); }
-  10.5% { opacity:.85; transform:translate(6px,-20px) rotate(-42deg); }
-  11% { opacity:.85; transform:translate(12px,-35px) rotate(-28deg); }
-  11.5% { opacity:.85; transform:translate(18px,-43px) rotate(-14deg); }
-  12% { opacity:.85; transform:translate(24px,-46px) rotate(0deg); }
-  12.5% { opacity:.85; transform:translate(30px,-43px) rotate(14deg); }
-  13% { opacity:.85; transform:translate(36px,-35px) rotate(28deg); }
-  13.5% { opacity:.8; transform:translate(42px,-20px) rotate(42deg); }
-  13.9% { opacity:.3; transform:translate(47px,-4px) rotate(53deg); }
-  14%,100% { opacity:0; transform:translate(48px,0px) rotate(55deg); }
+  0%,2.495% { opacity:0; transform:translate(0px,0px) rotate(-55deg); }
+  2.5% { opacity:0; transform:translate(0px,0px) rotate(-55deg); }
+  2.625% { opacity:.7; transform:translate(3px,-11px) rotate(-49deg); }
+  2.75% { opacity:.85; transform:translate(6px,-20px) rotate(-42deg); }
+  3% { opacity:.85; transform:translate(12px,-35px) rotate(-28deg); }
+  3.25% { opacity:.85; transform:translate(18px,-43px) rotate(-14deg); }
+  3.5% { opacity:.85; transform:translate(24px,-46px) rotate(0deg); }
+  3.75% { opacity:.85; transform:translate(30px,-43px) rotate(14deg); }
+  4% { opacity:.85; transform:translate(36px,-35px) rotate(28deg); }
+  4.25% { opacity:.8; transform:translate(42px,-20px) rotate(42deg); }
+  4.45% { opacity:.3; transform:translate(47px,-4px) rotate(53deg); }
+  4.5%,100% { opacity:0; transform:translate(48px,0px) rotate(55deg); }
 }
-.ambient-takeoff { animation:ambient-takeoff-ring 30s linear infinite; }
+.ambient-takeoff { animation:ambient-takeoff-ring 60s linear infinite; }
 @keyframes ambient-takeoff-ring {
-  0%,9.7% { opacity:0; transform:scale(.7); }
-  10% { opacity:.24; transform:scale(.85); }
-  10.7% { opacity:.15; transform:scale(1.25); }
-  12.3%,100% { opacity:0; transform:scale(1.8); }
+  0%,2.35% { opacity:0; transform:scale(.7); }
+  2.5% { opacity:.24; transform:scale(.85); }
+  2.85% { opacity:.15; transform:scale(1.25); }
+  3.65%,100% { opacity:0; transform:scale(1.8); }
 }
-.ambient-splash { animation:ambient-landing 30s linear infinite; }
+.ambient-splash { animation:ambient-landing 60s linear infinite; }
 @keyframes ambient-landing {
-  0%,13.9% { opacity:0; transform:scale(.5); }
-  14.1% { opacity:.4; transform:scale(.65); }
-  15.3% { opacity:.23; transform:scale(1.3); }
-  18%,100% { opacity:0; transform:scale(2.5); }
+  0%,4.45% { opacity:0; transform:scale(.5); }
+  4.55% { opacity:.4; transform:scale(.65); }
+  5.15% { opacity:.23; transform:scale(1.3); }
+  6.5%,100% { opacity:0; transform:scale(2.5); }
 }
-.ambient-droplets { animation:ambient-droplet-fade 30s ease-out infinite; }
+.ambient-droplets { animation:ambient-droplet-fade 60s ease-out infinite; }
 @keyframes ambient-droplet-fade {
-  0%,13.9% { opacity:0; transform:translateY(0px); }
-  14.1% { opacity:.45; transform:translateY(-1px); }
-  15.3%,100% { opacity:0; transform:translateY(2px); }
+  0%,4.45% { opacity:0; transform:translateY(0px); }
+  4.55% { opacity:.45; transform:translateY(-1px); }
+  5.15%,100% { opacity:0; transform:translateY(2px); }
 }
 @media(prefers-reduced-motion:reduce) {
   .ambient-motion { animation:none !important; }
