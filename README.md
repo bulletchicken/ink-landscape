@@ -7,9 +7,9 @@ Only aggregate daily counts are saved and published. The fetch does not query pr
 ## Reading the landscape
 
 - Dates and counts come directly from GitHub’s default profile contribution calendar, including any current-day entries or display-week padding. The calendar supplies the window; no separate start or end date is imposed.
-- Contributions are grouped into the calendar months touched by that window, usually 13 bins. The first and last months may be partial; their date labels show the included range.
+- Contributions are grouped into the calendar months touched by that window, usually 13 bins. The first and last months may be partial. Visible labels show the month and year; exact dates remain available in the saved data and SVG tooltips when the image is opened directly.
 - Main mountain height grows with the square of monthly contributions, with a small minimum height for nonzero months. Above that floor, 150:100:50 contributions gives heights in the ratio 9:4:1. The tallest month sets the scale for the current window.
-- Dates, totals, and small daily calendars travel with their mountains. An active day is a day with at least one counted contribution.
+- Month/year labels, monthly contribution totals, and small daily calendars travel with their mountains.
 - Distant peaks, connected land, trees, clouds, water, and fish are decorative. Their sizes and quantities do not encode additional activity.
 
 The scene loops every 180 seconds with several layers moving at different speeds. Twenty fish positions take turns, with a jump about every 3 seconds and each flight lasting 1.2 seconds. Their pattern repeats every 60 seconds. The artwork uses native SVG animation; reduced-motion preferences select a still image and disable motion inside the animated SVG as well.
@@ -39,4 +39,4 @@ The scripts use the Python standard library. The nightly workflow reuses its exi
 - `scripts/palette.py`: black ink, pale gray washes, and the white paper background.
 - `scripts/terrain.py`, `scripts/vegetation.py`, and `scripts/ambient.py`: procedural drawing and motion.
 
-The mountain contour and tapered-brush techniques are adapted from [Lingdong Huang’s {Shan, Shui}*](https://github.com/LingDong-/shan-shui-inf), with a monochrome palette, monthly contribution mapping, attached date labels, connected shoreline, parallax, and ambient details. This renderer adapts those techniques rather than running the full original engine. See [attribution and the MIT license](THIRD_PARTY_NOTICES.md).
+The mountain contour and tapered-brush techniques are adapted from [Lingdong Huang’s {Shan, Shui}*](https://github.com/LingDong-/shan-shui-inf), with a monochrome palette, monthly contribution mapping, attached month/year labels, connected shoreline, parallax, and ambient details. This renderer adapts those techniques rather than running the full original engine. See [attribution and the MIT license](THIRD_PARTY_NOTICES.md).

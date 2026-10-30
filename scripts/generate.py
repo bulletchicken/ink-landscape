@@ -163,12 +163,11 @@ def month_labels(parent, month, index, peak_day):
     cx = CENTER + index * SPACING
     node = add(parent, "g", {"data-label-month": month["month"], "data-contributions": month["contributions"], "data-center": cx,
                                       "transform": f"translate({cx} 0)"})
-    first, last = [dt.date.fromisoformat(month["days"][i]["date"]) for i in [0, -1]]
+    first = dt.date.fromisoformat(month["days"][0]["date"])
     add(node, "path", {"d": "M0 622 L0 632 M-2 625 L0 623 L2 625", "stroke": ACCENT, "stroke-width": ".8", "fill": "none", "opacity": ".65"})
     label(node, 0, 654, first.strftime("%B %Y"), 19, INK, SERIF, "middle")
-    label(node, 0, 675, f'{first.strftime("%b").upper()} {first.day:02d} — {last.day:02d}', 11, MUTED, anchor="middle", **{"letter-spacing": "1.4"})
-    label(node, -36, 714, f'{month["contributions"]}', 30, INK, SERIF, "middle")
-    label(node, -36, 733, "CONTRIBUTIONS", 8, MUTED, anchor="middle", **{"letter-spacing": ".6"})
+    label(node, -36, 696, f'{month["contributions"]}', 30, INK, SERIF, "middle")
+    label(node, -36, 715, "CONTRIBUTIONS", 8, MUTED, anchor="middle", **{"letter-spacing": ".6"})
     # A compact calendar travels beside each total, preserving daily detail.
     calendar = add(node, "g", {"data-calendar-month": month["month"]})
     first_of_month = first.replace(day=1)
@@ -179,7 +178,7 @@ def month_labels(parent, month, index, peak_day):
         amount = day["contributions"]
         colors = GRID
         level = 0 if not amount else min(4, 1 + int(amount / max(1, peak_day) * 3.99))
-        cell = add(calendar, "rect", {"x": 24 + (slot % 7) * 8, "y": 692 + (slot // 7) * 8,
+        cell = add(calendar, "rect", {"x": 24 + (slot % 7) * 8, "y": 674 + (slot // 7) * 8,
             "width": 6, "height": 6, "rx": 1, "fill": colors[level], "data-date": day["date"], "data-contributions": amount})
         add(cell, "title", text=f'{day["date"]}: {amount} contributions')
 
@@ -266,11 +265,6 @@ def render(data):
     rng = random.Random(391)
     for _ in range(310):
         add(paper, "circle", {"cx": f"{rng.uniform(0,1200):.1f}", "cy": f"{rng.uniform(0,620):.1f}", "r": f"{rng.uniform(.15,.55):.2f}", "fill": INK, "opacity": ".035"})
-    for x, number, caption, offset in [(50, f"{total:,}", "CONTRIBUTIONS", 70), (260, active, "ACTIVE DAYS", 53), (480, actual_peak, "PEAK MONTH", 53)]:
-        label(root, x, 45, number, 25, font=SERIF)
-        label(root, x + offset, 43, caption, 10, MUTED, **{"letter-spacing": 1.2})
-    add(root, "rect", {"x": 1005, "y": 36, "width": 3, "height": 3, "fill": ACCENT, "opacity": ".8"})
-    label(root, 1150, 43, "SAMPLE ACTIVITY" if data.get("sample") else "GITHUB ACTIVITY", 10, MUTED, anchor="end", **{"letter-spacing": 1.3})
     composition = add(root, "g", {"transform": "translate(0 -165)"})
     scene = add(composition, "g", {"mask": "url(#scene-fade)"})
     background = add(scene, "g", {"clip-path": "url(#art-clip)"})
@@ -289,10 +283,6 @@ def render(data):
         add(shore, "use", {"href": "#shore-tile", "x": offset})
     water = add(foreground, "g")
     ambient_css = build_ambient(defs, weather, water)
-    add(root, "line", {"x1": 50, "x2": 1150, "y1": 590, "y2": 590, "stroke": FINE, "opacity": ".24"})
-    label(root, 50, 609, "Monthly contributions · taller peaks, busier months", 10, MUTED)
-    date_range = " — ".join(dt.date.fromisoformat(data[key]).strftime("%d %b %Y").upper() for key in ("start", "end"))
-    label(root, 1150, 609, date_range, 10, MUTED, anchor="end", **{"letter-spacing": ".8"})
     style.text = (CSS.replace("$START", str(-START)).replace("$END", str(-START - PERIOD))
                  .replace("$FAR", str(-FAR_PERIOD)).replace("$MID", str(-MID_PERIOD))
                  .replace("$SHORE", str(-SHORE_PERIOD))) + ambient_css
