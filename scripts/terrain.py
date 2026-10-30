@@ -8,7 +8,7 @@ import random
 import xml.etree.ElementTree as ET
 
 NS = "http://www.w3.org/2000/svg"
-from palette import BG, INK, MOUNTAIN
+import palette
 
 
 def add(parent, tag, attrs):
@@ -25,7 +25,8 @@ def noise(x, seed):
             + .08 * math.sin(x * 9.31 + seed * 1.17))
 
 
-def brush(parent, points, color=INK, width=.7, opacity=.3):
+def brush(parent, points, color=None, width=.7, opacity=.3):
+    color = palette.INK if color is None else color
     left, right = [], []
     for i, (x, y) in enumerate(points):
         a, b = points[max(0, i - 1)], points[min(len(points) - 1, i + 1)]
@@ -68,7 +69,7 @@ def paint_mountain(defs, parent, identifier, height, half, seed, base=535, detai
     silhouette = rim + [(half, base + 3), (-half, base + 3)]
     clip = add(defs, "clipPath", {"id": identifier + "-clip"})
     add(clip, "polygon", {"points": pts(silhouette)})
-    add(parent, "polygon", {"points": pts(silhouette), "fill": MOUNTAIN})
+    add(parent, "polygon", {"points": pts(silhouette), "fill": palette.MOUNTAIN})
     add(parent, "polygon", {"points": pts(silhouette), "fill": "url(#mountain-wash)"})
     interior = add(parent, "g", {"clip-path": f"url(#{identifier}-clip)"})
     rng = random.Random(seed + 57)
@@ -77,8 +78,8 @@ def paint_mountain(defs, parent, identifier, height, half, seed, base=535, detai
     fold = [(0, base - height), (.09 * half, base - height * .72),
             (-.02 * half, base - height * .47), (.24 * half, base - height * .2),
             (.4 * half, base + 4), (half, base + 4)]
-    add(interior, "polygon", {"points": pts(fold), "fill": BG, "opacity": ".32"})
-    brush(interior, fold[:5], INK, .9, .22)
+    add(interior, "polygon", {"points": pts(fold), "fill": palette.BG, "opacity": ".32"})
+    brush(interior, fold[:5], palette.INK, .9, .22)
     for sample in [19, 30, 53, 64]:
         x, top = min(rim[sample - 3:sample + 4], key=lambda point: point[1])
         direction = -1 if x < 0 else 1
@@ -87,8 +88,8 @@ def paint_mountain(defs, parent, identifier, height, half, seed, base=535, detai
                 (x + direction * half * .08, top + reach * .52),
                 (x + direction * half * .16, base),
                 (x + direction * half * .33, base)]
-        add(interior, "polygon", {"points": pts(face), "fill": BG, "opacity": ".12"})
-        brush(interior, face[:4], INK, .55, .20)
+        add(interior, "polygon", {"points": pts(face), "fill": palette.BG, "opacity": ".12"})
+        brush(interior, face[:4], palette.INK, .55, .20)
 
     for j in range(max(8, round(half * height / 850 * detail))):
         u = rng.uniform(-.94, .94)
@@ -101,7 +102,7 @@ def paint_mountain(defs, parent, identifier, height, half, seed, base=535, detai
             t = k / 8
             trace.append((x + (noise(t * 5, j + seed) - .5) * (2 + height * .016)
                           + u * t * half * .12, start + t * (finish - start)))
-        brush(interior, trace, INK if j % 4 else BG, rng.uniform(.35, .8), rng.uniform(.10, .22))
+        brush(interior, trace, palette.INK if j % 4 else palette.BG, rng.uniform(.35, .8), rng.uniform(.10, .22))
 
     # Broken strata follow the crags, with unequal offsets to avoid a mesh.
     for j, fraction in enumerate([.18, .29, .43, .61, .78]):
@@ -110,12 +111,12 @@ def paint_mountain(defs, parent, identifier, height, half, seed, base=535, detai
             yy = base - (base - y) * fraction
             contour.append((x * (1.03 - fraction * .03), yy + math.sin(k * .3 + j) * min(2, height * .015)))
         for start, end in [(6 + j, 27 + j), (43 - j, 70 - j)]:
-            brush(interior, contour[start:end], INK, .34, .10 + .035 * fraction)
+            brush(interior, contour[start:end], palette.INK, .34, .10 + .035 * fraction)
 
     for _ in range(round((6 + height / 9) * detail)):
         x = rng.uniform(-half * .84, half * .84)
         y = base - rng.uniform(.04, .54) * height
         brush(interior, [(x, y), (x + 3, y - 1), (x + rng.uniform(5, 11), y + 1)],
-              INK, rng.uniform(.3, .6), rng.uniform(.12, .25))
-    brush(parent, rim, INK, .82, .82)
+              palette.INK, rng.uniform(.3, .6), rng.uniform(.12, .25))
+    brush(parent, rim, palette.INK, .82, palette.OUTLINE_OPACITY)
     return rim

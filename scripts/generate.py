@@ -7,6 +7,7 @@ This continues the first design's simplified renderer, not the full engine.
 """
 from pathlib import Path
 from collections import OrderedDict
+import argparse
 import copy
 import datetime as dt
 import json
@@ -17,7 +18,7 @@ import xml.etree.ElementTree as ET
 from ambient import build_ambient
 from terrain import paint_mountain
 from vegetation import tree
-from palette import PAGE_BG, BG, INK, MUTED, FINE, WASH, TREE, ACCENT, MOUNTAIN, LAND_BOTTOM, STONE, GRID
+import palette
 
 ROOT = Path(__file__).resolve().parents[1]
 NS = "http://www.w3.org/2000/svg"
@@ -38,7 +39,8 @@ def add(parent, tag, attrs=None, text=None):
     return node
 
 
-def label(parent, x, y, text, size=16, color=INK, font=MONO, anchor="start", **attrs):
+def label(parent, x, y, text, size=16, color=None, font=MONO, anchor="start", **attrs):
+    color = palette.INK if color is None else color
     return add(parent, "text", {"x": x, "y": y, "font-family": font,
                "font-size": size, "fill": color, "text-anchor": anchor, **attrs}, str(text))
 
@@ -53,8 +55,9 @@ def noise(x, seed):
             + .08 * math.sin(x * 9.31 + seed * 1.17))
 
 
-def brush(parent, points, color=INK, width=.7, opacity=.3):
+def brush(parent, points, color=None, width=.7, opacity=.3):
     """Tapered polygons preserve the ink edge without SVG stroke filters."""
+    color = palette.INK if color is None else color
     left, right = [], []
     for i, (x, y) in enumerate(points):
         a, b = points[max(0, i - 1)], points[min(len(points) - 1, i + 1)]
@@ -92,14 +95,14 @@ def connected_land(parent):
     add(land, "polygon", {"points": pts(upper + lower[::-1]), "fill": "url(#land-wash)"})
     # Broken edges and little mineral strokes avoid an outlined ribbon.
     for start in range(3, len(lower) - 9, 13):
-        brush(land, lower[start:start + 9], FINE, .55, .30)
+        brush(land, lower[start:start + 9], palette.FINE, .55, .30)
     rng = random.Random(810)
     for i in range(72):
         x = rng.uniform(12, PERIOD - 44)
         y = rng.uniform(BASE + 4, BASE + 10)
         length = rng.uniform(8, 27)
         brush(land, [(x, y), (x + length * .45, y - rng.uniform(.3, 1.2)),
-                     (x + length, y + .2)], FINE, .32, rng.uniform(.15, .28))
+                     (x + length, y + .2)], palette.FINE, .32, rng.uniform(.15, .28))
 
 
 def decoration(defs):
@@ -135,8 +138,8 @@ def decoration(defs):
         half = rng.uniform(26, 66)
         rock = [(x - half, y + 3), (x - half * .65, y - 1), (x - 8, y - 4),
                 (x + half * .38, y - 1.8), (x + half, y + 3)]
-        add(shore, "polygon", {"points": pts(rock), "fill": BG, "opacity": ".82"})
-        brush(shore, rock, FINE, .8, .6)
+        add(shore, "polygon", {"points": pts(rock), "fill": palette.BG, "opacity": ".82"})
+        brush(shore, rock, palette.FINE, .8, .6)
         # Low angular stones and broken bank strokes ground each planting.
         for j in range(3):
             rx = x + rng.uniform(-half * .55, half * .55)
@@ -144,19 +147,19 @@ def decoration(defs):
             rise = rng.uniform(2, 5)
             stone = [(rx - width, y + 1), (rx - width * .42, y - rise * .8),
                      (rx + width * .15, y - rise), (rx + width, y + 1)]
-            add(shore, "polygon", {"points": pts(stone), "fill": STONE, "opacity": ".7"})
-            brush(shore, stone, TREE, .35, .27)
+            add(shore, "polygon", {"points": pts(stone), "fill": palette.STONE, "opacity": ".7"})
+            brush(shore, stone, palette.TREE, .35, .27)
         for j in range(2):
             offset = rng.uniform(-half * .65, half * .2)
             brush(shore, [(x + offset, y + 4 + j * 2), (x + offset + 12, y + 3.6 + j * 2),
-                          (x + offset + 31, y + 4 + j * 2)], FINE, .45, .32)
+                          (x + offset + 31, y + 4 + j * 2)], palette.FINE, .45, .32)
         for j in range(1 + (i % 3 == 0)):
             tree(shore, x + rng.uniform(-14, 14), y - 2, rng.uniform(28, 45), (i + j) % 3, i * 11 + j)
         # A few low reeds, so islands do not look uniformly planted.
         if i % 4 == 1:
             for j in range(5):
                 xx = x + half * .5 + j * 2
-                brush(shore, [(xx, y), (xx + 1, y - 3), (xx + rng.uniform(-2, 3), y - rng.uniform(4, 9))], TREE, .32, .35)
+                brush(shore, [(xx, y), (xx + 1, y - 3), (xx + rng.uniform(-2, 3), y - rng.uniform(4, 9))], palette.TREE, .32, .35)
 
 
 def month_labels(parent, month, index, peak_day):
@@ -164,10 +167,10 @@ def month_labels(parent, month, index, peak_day):
     node = add(parent, "g", {"data-label-month": month["month"], "data-contributions": month["contributions"], "data-center": cx,
                                       "transform": f"translate({cx} 0)"})
     first = dt.date.fromisoformat(month["days"][0]["date"])
-    add(node, "path", {"d": "M0 622 L0 632 M-2 625 L0 623 L2 625", "stroke": ACCENT, "stroke-width": ".8", "fill": "none", "opacity": ".65"})
-    label(node, 0, 654, first.strftime("%B %Y"), 19, INK, SERIF, "middle")
-    label(node, -36, 696, f'{month["contributions"]}', 30, INK, SERIF, "middle")
-    label(node, -36, 715, "CONTRIBUTIONS", 8, MUTED, anchor="middle", **{"letter-spacing": ".6"})
+    add(node, "path", {"d": "M0 622 L0 632 M-2 625 L0 623 L2 625", "stroke": palette.ACCENT, "stroke-width": ".8", "fill": "none", "opacity": ".65"})
+    label(node, 0, 654, first.strftime("%B %Y"), 19, palette.INK, SERIF, "middle")
+    label(node, -36, 696, f'{month["contributions"]}', 30, palette.INK, SERIF, "middle")
+    label(node, -36, 715, "CONTRIBUTIONS", 8, palette.MUTED, anchor="middle", **{"letter-spacing": ".6"})
     # A compact calendar travels beside each total, preserving daily detail.
     calendar = add(node, "g", {"data-calendar-month": month["month"]})
     first_of_month = first.replace(day=1)
@@ -176,15 +179,16 @@ def month_labels(parent, month, index, peak_day):
         date = dt.date.fromisoformat(day["date"])
         slot = offset + date.day - 1
         amount = day["contributions"]
-        colors = GRID
+        colors = palette.GRID
         level = 0 if not amount else min(4, 1 + int(amount / max(1, peak_day) * 3.99))
         cell = add(calendar, "rect", {"x": 24 + (slot % 7) * 8, "y": 674 + (slot // 7) * 8,
             "width": 6, "height": 6, "rx": 1, "fill": colors[level], "data-date": day["date"], "data-contributions": amount})
         add(cell, "title", text=f'{day["date"]}: {amount} contributions')
 
 
-def render(data):
+def render(data, theme="white"):
     global PERIOD, START, FAR_PERIOD, MID_PERIOD, SHORE_PERIOD
+    palette.configure(theme)
     months = OrderedDict()
     for day in data["days"]:
         key = day["date"][:7]
@@ -203,13 +207,13 @@ def render(data):
     actual_peak = max(m["contributions"] for m in months)
     peak = max(1, actual_peak)
     peak_day = max(d["contributions"] for d in data["days"])
-    root = ET.Element(f"{{{NS}}}svg", {"width": "1200", "height": "620", "viewBox": "0 0 1200 620", "role": "img", "aria-labelledby": "title desc"})
+    root = ET.Element(f"{{{NS}}}svg", {"width": "1200", "height": "620", "viewBox": "0 0 1200 620", "role": "img", "aria-labelledby": "title desc", "data-theme": theme})
     add(root, "title", {"id": "title"}, "Monthly contributions — an ink mountain landscape")
     scope = "fictional contributions" if data.get("sample") else "GitHub profile contributions"
     add(root, "desc", {"id": "desc"}, f"{total:,} {scope} across {active} active days, from {data['start']} to {data['end']}. Main mountain height grows with squared monthly contributions. Each date, count, and daily calendar travels with its mountain. Fainter cragged peaks use the same drawing at different depths. Brushwork trees, mist, reflections and river life are decorative. A fish jumps at a different spot every 3 seconds. The seamless scene repeats every 180 seconds. Reduced motion is supported.")
     defs = add(root, "defs")
     style = add(root, "style")
-    # White paper extends to the edge; its sparse grain softly fades away.
+    # The paper and sparse grain softly fade into the selected outer background.
     for axis, stops in [
         ("x", [(0, 0), (.004, 0), (.09, 1), (.91, 1), (.996, 0), (1, 0)]),
         ("y", [(0, 0), (.008, 0), (.12, 1), (.88, 1), (.992, 0), (1, 0)]),
@@ -221,9 +225,9 @@ def render(data):
         mask = add(defs, "mask", {"id": f"paper-mask-{axis}", "maskUnits": "userSpaceOnUse",
                                   "x": 0, "y": 0, "width": 1200, "height": 620})
         add(mask, "rect", {"width": 1200, "height": 620, "fill": f"url(#paper-fade-{axis})"})
-    for name, stops in [("mountain-wash", [(0, WASH, .78), (1, BG, .10)]),
-                        ("base-mist", [(0, BG, 0), (1, BG, .45)]),
-                        ("land-wash", [(0, MOUNTAIN, 1), (1, LAND_BOTTOM, 1)])]:
+    for name, stops in [("mountain-wash", [(0, palette.WASH, .78), (1, palette.BG, .10)]),
+                        ("base-mist", [(0, palette.BG, 0), (1, palette.BG, .45)]),
+                        ("land-wash", [(0, palette.MOUNTAIN, 1), (1, palette.LAND_BOTTOM, 1)])]:
         gradient = add(defs, "linearGradient", {"id": name, "x1": 0, "x2": 0, "y1": 0, "y2": 1})
         for offset, color, opacity in stops:
             add(gradient, "stop", {"offset": offset, "stop-color": color, "stop-opacity": opacity})
@@ -258,13 +262,13 @@ def render(data):
             add(tile, "use", {"href": f"#mountain-{index}", "x": cx + delta})
             add(reflections, "use", {"href": f"#mountain-{index}", "transform": f"translate({cx + delta} 632.25) scale(1 -.15)"})
         month_labels(tile, month, index, peak_day)
-    add(root, "rect", {"width": 1200, "height": 620, "fill": PAGE_BG})
+    add(root, "rect", {"width": 1200, "height": 620, "fill": palette.PAGE_BG})
     paper_x = add(root, "g", {"mask": "url(#paper-mask-x)"})
     paper = add(paper_x, "g", {"mask": "url(#paper-mask-y)"})
-    add(paper, "rect", {"width": 1200, "height": 620, "fill": BG})
+    add(paper, "rect", {"width": 1200, "height": 620, "fill": palette.BG})
     rng = random.Random(391)
     for _ in range(310):
-        add(paper, "circle", {"cx": f"{rng.uniform(0,1200):.1f}", "cy": f"{rng.uniform(0,620):.1f}", "r": f"{rng.uniform(.15,.55):.2f}", "fill": INK, "opacity": ".035"})
+        add(paper, "circle", {"cx": f"{rng.uniform(0,1200):.1f}", "cy": f"{rng.uniform(0,620):.1f}", "r": f"{rng.uniform(.15,.55):.2f}", "fill": palette.INK, "opacity": ".035"})
     composition = add(root, "g", {"transform": "translate(0 -165)"})
     scene = add(composition, "g", {"mask": "url(#scene-fade)"})
     background = add(scene, "g", {"clip-path": "url(#art-clip)"})
@@ -307,15 +311,28 @@ CSS = """
 
 
 def main():
-    data = json.loads((ROOT / "data/activity.json").read_text())
-    root, heights = render(data)
-    assets = ROOT / "assets"
-    assets.mkdir(exist_ok=True)
-    ET.ElementTree(root).write(assets / "nocturne.svg", encoding="utf-8", xml_declaration=True)
-    still = copy.deepcopy(root)
-    still.find(f"{{{NS}}}style").text += "\n* {animation:none !important}\n.ambient-fish,.ambient-splash,.ambient-droplets {opacity:0 !important}\n"
-    ET.ElementTree(still).write(assets / "nocturne-still.svg", encoding="utf-8", xml_declaration=True)
-    print(json.dumps({"assets": ["nocturne.svg", "nocturne-still.svg"], "months": heights}, indent=2))
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--theme", choices=[*palette.THEMES, "all"], default="all",
+                        help="Palette to render; defaults to all three.")
+    parser.add_argument("--input", type=Path, default=ROOT / "data/activity.json",
+                        help="Contribution JSON; defaults to data/activity.json.")
+    parser.add_argument("--output-dir", type=Path, default=ROOT / "assets",
+                        help="Where to write SVGs; defaults to assets/.")
+    args = parser.parse_args()
+    data = json.loads(args.input.read_text())
+    themes = list(palette.THEMES) if args.theme == "all" else [args.theme]
+    args.output_dir.mkdir(parents=True, exist_ok=True)
+    filenames = []
+    for theme in themes:
+        root, heights = render(data, theme)
+        animated_name = f"landscape-{theme}.svg"
+        still_name = f"landscape-{theme}-still.svg"
+        ET.ElementTree(root).write(args.output_dir / animated_name, encoding="utf-8", xml_declaration=True)
+        still = copy.deepcopy(root)
+        still.find(f"{{{NS}}}style").text += "\n* {animation:none !important}\n.ambient-fish,.ambient-takeoff,.ambient-splash,.ambient-droplets {opacity:0 !important}\n"
+        ET.ElementTree(still).write(args.output_dir / still_name, encoding="utf-8", xml_declaration=True)
+        filenames.extend([animated_name, still_name])
+    print(json.dumps({"themes": themes, "assets": filenames, "months": heights}, indent=2))
 
 
 if __name__ == "__main__":

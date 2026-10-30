@@ -8,7 +8,7 @@ import random
 import xml.etree.ElementTree as ET
 
 NS = "http://www.w3.org/2000/svg"
-from palette import TREE, FINE, BG
+import palette
 
 
 def _add(parent, tag, attrs):
@@ -30,8 +30,9 @@ def _curve(a, b, c, d, steps=10):
     return result
 
 
-def _brush(parent, points, width, opacity=.62, color=TREE, taper="branch"):
+def _brush(parent, points, width, opacity=.62, color=None, taper="branch"):
     """An irregular pressure envelope around a curved brush centerline."""
+    color = palette.TREE if color is None else color
     if len(points) < 2:
         return
     left, right = [], []
@@ -87,11 +88,11 @@ def tree(parent, x, y, height, kind, seed):
     for side in (-1, 1):
         _brush(sway, _curve((side*.3*unit, -h*.14), (side*.3*unit, -h*.035),
                            (side*2.1*unit, -.3*unit), (side*rng.uniform(3, 4.6)*unit, .5*unit), 7),
-               .72*unit, .52, FINE)
-    _brush(sway, trunk, 1.05*unit, .73, FINE)
+               .72*unit, .52, palette.FINE)
+    _brush(sway, trunk, 1.05*unit, .73, palette.FINE)
     _brush(sway, [(px-.22*unit, py) for px, py in trunk], .55*unit, .77)
     # One interrupted dark fissure leaves the trunk looking dry and fibrous.
-    _brush(sway, trunk[2:10], .16*unit, .57, BG)
+    _brush(sway, trunk[2:10], .16*unit, .57, palette.BG)
 
     if kind == 0:
         # Alternating long and short boughs leave open windows in the crown.

@@ -9,7 +9,7 @@ import random
 import xml.etree.ElementTree as ET
 
 NS = "http://www.w3.org/2000/svg"
-from palette import FISH as INK, WATER, CLOUD
+import palette
 
 FISH_COUNT = 20
 FISH_PERIOD = 60
@@ -34,7 +34,7 @@ def _clouds(defs, background_group):
         (".72", ".12"), ("1", "0"),
     ]:
         _add(cloud_fill, "stop", {
-            "offset": offset, "stop-color": CLOUD, "stop-opacity": opacity,
+            "offset": offset, "stop-color": palette.CLOUD, "stop-opacity": opacity,
         })
 
     # Each cloud is built from separate brush deposits: a broad wash, a
@@ -74,7 +74,7 @@ def _clouds(defs, background_group):
         ("M1051 288 Q1069 288 1091 292 M1098 293 l14 2", .10),
     ]:
         _add(clouds, "path", {
-            "d": d, "fill": "none", "stroke": CLOUD,
+            "d": d, "fill": "none", "stroke": palette.CLOUD,
             "stroke-width": ".55", "opacity": opacity,
             "stroke-linecap": "round",
         })
@@ -106,7 +106,7 @@ def _clouds(defs, background_group):
         "d": "M66 278 Q91 278 109 280 M119 280 l12 -1 "
              "M246 283 Q267 286 286 283 M296 282 l13 -1 "
              "M446 277 Q466 277 487 280 M498 281 l15 1",
-        "fill": "none", "stroke": CLOUD, "stroke-width": ".5",
+        "fill": "none", "stroke": palette.CLOUD, "stroke-width": ".5",
         "stroke-linecap": "round", "opacity": ".15",
     })
     high_lane = _add(background_group, "g", {
@@ -142,7 +142,7 @@ def _river(water_group):
                  f"{length*.58:.2f} -.15 Q{length*.78:.2f} .45 {length:.2f} 0 "
                  f"Q{length*.77:.2f} {thickness:.2f} {length*.57:.2f} {thickness*.6:.2f} "
                  f"C{length*.34:.2f} {crest+thickness:.2f} {length*.2:.2f} -.05 0 0Z",
-            "fill": WATER,
+            "fill": palette.WATER,
         })
         if i % 3 != 1:
             start, end = length * .21, length * rng.uniform(.56, .82)
@@ -150,13 +150,13 @@ def _river(water_group):
             _add(mark, "path", {
                 "d": f"M{start:.2f} {echo_y:.2f} "
                      f"Q{(start+end)*.5:.2f} {echo_y-.55:.2f} {end:.2f} {echo_y+.1:.2f}",
-                "fill": "none", "stroke": WATER, "stroke-width": ".4",
+                "fill": "none", "stroke": palette.WATER, "stroke-width": ".4",
                 "stroke-linecap": "round", "opacity": ".55",
             })
         if i % 4 == 0:
             _add(mark, "path", {
                 "d": f"M{length+6:.2f} .1 l{rng.uniform(5,13):.2f} -.35",
-                "fill": "none", "stroke": WATER, "stroke-width": ".45",
+                "fill": "none", "stroke": palette.WATER, "stroke-width": ".45",
                 "stroke-linecap": "round", "opacity": ".75",
             })
 
@@ -168,29 +168,29 @@ def _fish_marks(defs):
         "d": "M6 0 C3.2 -2.2 .2 -2.4 -2.8 -.6 "
              "L-5.7 -2.6 L-4.9 0 L-5.7 2.5 L-2.8 .6 "
              "C.1 2.2 3.4 1.8 6 0Z",
-        "fill": INK,
+        "fill": palette.FISH,
     })
     _add(fish, "path", {
         "d": "M-.8 -1.2 L.4 -3.1 L2 -1.5 M.1 1.1 L-1 2.6 L2.1 1.3",
-        "fill": INK, "opacity": ".7",
+        "fill": palette.FISH, "opacity": ".7",
     })
     takeoff = _add(defs, "g", {"id": "ambient-fish-takeoff"})
     _add(takeoff, "path", {
         "d": "M-6 0 Q-2 -1.6 3 -.5 M-5 1 Q0 2 5 .5",
-        "fill": "none", "stroke": WATER, "stroke-width": ".65",
+        "fill": "none", "stroke": palette.WATER, "stroke-width": ".65",
         "stroke-linecap": "round",
     })
     splash = _add(defs, "g", {"id": "ambient-fish-landing"})
     _add(splash, "path", {
         "d": "M-9 0 C-7 -2.1 5 -2.7 9 -.1 M-8 .9 C-4 2.4 4 2.3 7 1 "
              "M-5 -.2 Q0 -1.3 4 -.3",
-        "fill": "none", "stroke": INK, "stroke-width": ".6",
+        "fill": "none", "stroke": palette.FISH, "stroke-width": ".6",
         "stroke-linecap": "round",
     })
     droplets = _add(defs, "g", {"id": "ambient-fish-droplets"})
     for d in ["M-3 -1 q-3 -2 -3.6 -4.5", "M1 -1 q0 -3 1 -5", "M4 0 q2 -1.4 3 -3"]:
         _add(droplets, "path", {
-            "d": d, "fill": "none", "stroke": INK,
+            "d": d, "fill": "none", "stroke": palette.FISH,
             "stroke-width": ".55", "stroke-linecap": "round",
         })
 
