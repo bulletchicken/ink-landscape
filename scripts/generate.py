@@ -17,12 +17,11 @@ import xml.etree.ElementTree as ET
 from ambient import build_ambient
 from terrain import paint_mountain
 from vegetation import tree
+from palette import PAGE_BG, BG, INK, MUTED, FINE, WASH, TREE, ACCENT, MOUNTAIN, LAND_BOTTOM, STONE, GRID
 
 ROOT = Path(__file__).resolve().parents[1]
 NS = "http://www.w3.org/2000/svg"
 ET.register_namespace("", NS)
-BG, INK, MUTED = "#101919", "#dbe4ce", "#a5b6a9"
-FINE, JADE, TREE, RED = "#536f63", "#315649", "#a6b8a0", "#e78772"
 SERIF = "Georgia, Times New Roman, serif"
 MONO = "ui-monospace, SFMono-Regular, Consolas, monospace"
 SPACING, BASE, MAX_HEIGHT = 210, 535, 260
@@ -145,7 +144,7 @@ def decoration(defs):
             rise = rng.uniform(2, 5)
             stone = [(rx - width, y + 1), (rx - width * .42, y - rise * .8),
                      (rx + width * .15, y - rise), (rx + width, y + 1)]
-            add(shore, "polygon", {"points": pts(stone), "fill": "#1d302a", "opacity": ".7"})
+            add(shore, "polygon", {"points": pts(stone), "fill": STONE, "opacity": ".7"})
             brush(shore, stone, TREE, .35, .27)
         for j in range(2):
             offset = rng.uniform(-half * .65, half * .2)
@@ -165,7 +164,7 @@ def month_labels(parent, month, index, peak_day):
     node = add(parent, "g", {"data-label-month": month["month"], "data-commits": month["commits"], "data-center": cx,
                                       "transform": f"translate({cx} 0)"})
     first, last = [dt.date.fromisoformat(month["days"][i]["date"]) for i in [0, -1]]
-    add(node, "path", {"d": "M0 622 L0 632 M-2 625 L0 623 L2 625", "stroke": RED, "stroke-width": ".8", "fill": "none", "opacity": ".65"})
+    add(node, "path", {"d": "M0 622 L0 632 M-2 625 L0 623 L2 625", "stroke": ACCENT, "stroke-width": ".8", "fill": "none", "opacity": ".65"})
     label(node, 0, 654, first.strftime("%B %Y"), 19, INK, SERIF, "middle")
     label(node, 0, 675, f'{first.strftime("%b").upper()} {first.day:02d} — {last.day:02d}', 11, MUTED, anchor="middle", **{"letter-spacing": "1.4"})
     label(node, -36, 714, f'{month["commits"]}', 30, INK, SERIF, "middle")
@@ -178,7 +177,7 @@ def month_labels(parent, month, index, peak_day):
         date = dt.date.fromisoformat(day["date"])
         slot = offset + date.day - 1
         amount = day["commits"]
-        colors = ["#25332e", "#405f4b", "#668563", "#94ad7d", "#d2dfaf"]
+        colors = GRID
         level = 0 if not amount else min(4, 1 + int(amount / max(1, peak_day) * 3.99))
         cell = add(calendar, "rect", {"x": 24 + (slot % 7) * 8, "y": 692 + (slot // 7) * 8,
             "width": 6, "height": 6, "rx": 1, "fill": colors[level], "data-date": day["date"], "data-commits": amount})
@@ -211,9 +210,22 @@ def render(data):
     add(root, "desc", {"id": "desc"}, f"{total:,} {scope} across {active} active days, from {data['start']} to {data['end']}. Main mountain height grows with squared monthly commits. Each date, count, and daily calendar travels with its mountain. Fainter cragged peaks use the same drawing at different depths. Brushwork trees, mist, reflections and river life are decorative. A fish jumps at a different spot every 7.5 seconds. The seamless scene repeats every 180 seconds. Reduced motion is supported.")
     defs = add(root, "defs")
     style = add(root, "style")
-    for name, stops in [("mountain-wash", [(0, JADE, .78), (1, BG, .10)]),
+    # Fade the charcoal paper into the exact page color on all four sides.
+    # The drawing and labels retain their contrast; only the paper/grain fades.
+    for axis, stops in [
+        ("x", [(0, 0), (.004, 0), (.09, 1), (.91, 1), (.996, 0), (1, 0)]),
+        ("y", [(0, 0), (.008, 0), (.12, 1), (.88, 1), (.992, 0), (1, 0)]),
+    ]:
+        gradient = add(defs, "linearGradient", {"id": f"paper-fade-{axis}",
+            "x1": 0, "y1": 0, "x2": 1 if axis == "x" else 0, "y2": 1 if axis == "y" else 0})
+        for offset, opacity in stops:
+            add(gradient, "stop", {"offset": offset, "stop-color": "white", "stop-opacity": opacity})
+        mask = add(defs, "mask", {"id": f"paper-mask-{axis}", "maskUnits": "userSpaceOnUse",
+                                  "x": 0, "y": 0, "width": 1200, "height": 620})
+        add(mask, "rect", {"width": 1200, "height": 620, "fill": f"url(#paper-fade-{axis})"})
+    for name, stops in [("mountain-wash", [(0, WASH, .78), (1, BG, .10)]),
                         ("base-mist", [(0, BG, 0), (1, BG, .45)]),
-                        ("land-wash", [(0, "#203a32", 1), (1, "#1a2d27", 1)])]:
+                        ("land-wash", [(0, MOUNTAIN, 1), (1, LAND_BOTTOM, 1)])]:
         gradient = add(defs, "linearGradient", {"id": name, "x1": 0, "x2": 0, "y1": 0, "y2": 1})
         for offset, color, opacity in stops:
             add(gradient, "stop", {"offset": offset, "stop-color": color, "stop-opacity": opacity})
@@ -248,14 +260,17 @@ def render(data):
             add(tile, "use", {"href": f"#mountain-{index}", "x": cx + delta})
             add(reflections, "use", {"href": f"#mountain-{index}", "transform": f"translate({cx + delta} 632.25) scale(1 -.15)"})
         month_labels(tile, month, index, peak_day)
-    add(root, "rect", {"width": 1200, "height": 620, "rx": 8, "fill": BG})
+    add(root, "rect", {"width": 1200, "height": 620, "fill": PAGE_BG})
+    paper_x = add(root, "g", {"mask": "url(#paper-mask-x)"})
+    paper = add(paper_x, "g", {"mask": "url(#paper-mask-y)"})
+    add(paper, "rect", {"width": 1200, "height": 620, "fill": BG})
     rng = random.Random(391)
     for _ in range(310):
-        add(root, "circle", {"cx": f"{rng.uniform(0,1200):.1f}", "cy": f"{rng.uniform(0,620):.1f}", "r": f"{rng.uniform(.15,.55):.2f}", "fill": INK, "opacity": ".035"})
+        add(paper, "circle", {"cx": f"{rng.uniform(0,1200):.1f}", "cy": f"{rng.uniform(0,620):.1f}", "r": f"{rng.uniform(.15,.55):.2f}", "fill": INK, "opacity": ".035"})
     for x, number, caption, offset in [(50, f"{total:,}", "COMMITS", 70), (260, active, "ACTIVE DAYS", 53), (480, actual_peak, "PEAK MONTH", 53)]:
         label(root, x, 45, number, 25, font=SERIF)
         label(root, x + offset, 43, caption, 10, MUTED, **{"letter-spacing": 1.2})
-    add(root, "rect", {"x": 1005, "y": 36, "width": 3, "height": 3, "fill": RED, "opacity": ".8"})
+    add(root, "rect", {"x": 1005, "y": 36, "width": 3, "height": 3, "fill": ACCENT, "opacity": ".8"})
     label(root, 1150, 43, "SAMPLE ACTIVITY" if data.get("sample") else "PUBLIC COMMITS", 10, MUTED, anchor="end", **{"letter-spacing": 1.3})
     composition = add(root, "g", {"transform": "translate(0 -165)"})
     scene = add(composition, "g", {"mask": "url(#scene-fade)"})

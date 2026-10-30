@@ -8,7 +8,7 @@ import random
 import xml.etree.ElementTree as ET
 
 NS = "http://www.w3.org/2000/svg"
-TREE, FINE, BG = "#a6b8a0", "#536f63", "#101919"
+from palette import TREE, FINE, BG
 
 
 def _add(parent, tag, attrs):

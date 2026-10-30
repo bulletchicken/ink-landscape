@@ -12,6 +12,8 @@ The ink landscape at the top of the profile README is generated from **bulletchi
 
 The scene loops every 180 seconds with several layers moving at different speeds. Four fish take turns jumping about every 7.5 seconds. The artwork uses native SVG animation; reduced-motion preferences select a still image and disable motion inside the animated SVG as well.
 
+The drawing uses black, white, and neutral gray tones. Its charcoal paper fades at all four edges into `rgb(14, 17, 22)` (`#0e1116`) to blend with the profile background.
+
 ## Refresh
 
 The GitHub workflow refreshes the data and both images nightly at **06:23 UTC**, replacing the former Commit City refresh. It can also be run manually from the repository’s Actions tab.
@@ -32,6 +34,7 @@ The scripts use the Python standard library. For fetching, provide `GITHUB_TOKEN
 - `data/activity.json`: fetched public commit counts and date range.
 - `scripts/fetch_activity.py`: refreshes the public commit data.
 - `scripts/generate.py`: composes the landscape from that data.
+- `scripts/palette.py`: monochrome ink tones and the page-matching background color.
 - `scripts/terrain.py`, `scripts/vegetation.py`, and `scripts/ambient.py`: procedural drawing and motion.
 
 The mountain contour and tapered-brush techniques are adapted from [Lingdong Huang’s {Shan, Shui}*](https://github.com/LingDong-/shan-shui-inf), with a dark palette, monthly commit mapping, attached date labels, connected shoreline, parallax, and ambient details. This renderer adapts those techniques rather than running the full original engine. See [attribution and the MIT license](THIRD_PARTY_NOTICES.md).

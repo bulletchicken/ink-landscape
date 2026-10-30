@@ -8,7 +8,7 @@ import random
 import xml.etree.ElementTree as ET
 
 NS = "http://www.w3.org/2000/svg"
-BG, INK = "#101919", "#dbe4ce"
+from palette import BG, INK, MOUNTAIN
 
 
 def add(parent, tag, attrs):
@@ -68,7 +68,7 @@ def paint_mountain(defs, parent, identifier, height, half, seed, base=535, detai
     silhouette = rim + [(half, base + 3), (-half, base + 3)]
     clip = add(defs, "clipPath", {"id": identifier + "-clip"})
     add(clip, "polygon", {"points": pts(silhouette)})
-    add(parent, "polygon", {"points": pts(silhouette), "fill": "#203a32"})
+    add(parent, "polygon", {"points": pts(silhouette), "fill": MOUNTAIN})
     add(parent, "polygon", {"points": pts(silhouette), "fill": "url(#mountain-wash)"})
     interior = add(parent, "g", {"clip-path": f"url(#{identifier}-clip)"})
     rng = random.Random(seed + 57)

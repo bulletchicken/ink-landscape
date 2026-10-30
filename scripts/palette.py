@@ -1,0 +1,16 @@
+"""Neutral ink tones with the requested GitHub background at the outer edge."""
+PAGE_BG = "#0e1116"  # rgb(14, 17, 22)
+BG = "#171717"
+INK = "#e3e3e3"
+MUTED = "#acacac"
+FINE = "#626262"
+WASH = "#494949"
+MOUNTAIN = "#303030"
+LAND_BOTTOM = "#262626"
+STONE = "#292929"
+TREE = "#b2b2b2"
+ACCENT = "#c9c9c9"
+FISH = "#c4c4c4"
+WATER = "#9c9c9c"
+CLOUD = "#808080"
+GRID = ("#2e2e2e", "#505050", "#777777", "#a2a2a2", "#d6d6d6")

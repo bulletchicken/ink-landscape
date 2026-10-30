@@ -9,9 +9,7 @@ import random
 import xml.etree.ElementTree as ET
 
 NS = "http://www.w3.org/2000/svg"
-INK = "#b8cbb7"
-WATER = "#89a795"
-CLOUD = "#6f8e7d"
+from palette import FISH as INK, WATER, CLOUD
 
 
 def _add(parent, tag, attrs=None, text=None):
