@@ -1,0 +1,2064 @@
+{
+  "sample": true,
+  "source": {
+    "repository": "https://github.com/LingDong-/shan-shui-inf",
+    "commit": "9f754d2b2e73495db7883d4d4055a7b0903b0454",
+    "index_sha256": "858792db2659e7d4c6604606d4ff2175f137f07061f8af51644f06ab0788215f"
+  },
+  "width": 5200,
+  "height": 620,
+  "period": 5200,
+  "months": [
+    {
+      "key": "2025-10",
+      "commits": 23,
+      "activeDays": 3,
+      "days": 6,
+      "mountain": {
+        "x": 200,
+        "y": 385,
+        "hei": 500,
+        "wid": 5622.609696912466,
+        "tex": 97,
+        "targetRise": 6,
+        "referenceRise": 217.14163211293112,
+        "scale": 0.027631734834154313,
+        "renderWidth": 155.36246022103
+      },
+      "explicitTrees": 1
+    },
+    {
+      "key": "2025-11",
+      "commits": 83,
+      "activeDays": 20,
+      "days": 30,
+      "mountain": {
+        "x": 600,
+        "y": 385,
+        "hei": 500,
+        "wid": 1561.2616081643384,
+        "tex": 165,
+        "targetRise": 42.926703341700936,
+        "referenceRise": 286.33814053140463,
+        "scale": 0.1499161210659356,
+        "renderWidth": 234.05828426516229
+      },
+      "explicitTrees": 3
+    },
+    {
+      "key": "2025-12",
+      "commits": 137,
+      "activeDays": 25,
+      "days": 31,
+      "mountain": {
+        "x": 1000,
+        "y": 385,
+        "hei": 500,
+        "wid": 673.6471981335468,
+        "tex": 185,
+        "targetRise": 116.9533016432552,
+        "referenceRise": 253.66673740261808,
+        "scale": 0.4610509948634997,
+        "renderWidth": 310.58571088648085
+      },
+      "explicitTrees": 4
+    },
+    {
+      "key": "2026-01",
+      "commits": 151,
+      "activeDays": 25,
+      "days": 31,
+      "mountain": {
+        "x": 1400,
+        "y": 385,
+        "hei": 500,
+        "wid": 508.1193427463217,
+        "tex": 185,
+        "targetRise": 142.07748046075235,
+        "referenceRise": 218.11302273565158,
+        "scale": 0.6513938447084258,
+        "renderWidth": 330.98581224224483
+      },
+      "explicitTrees": 4
+    },
+    {
+      "key": "2026-02",
+      "commits": 83,
+      "activeDays": 23,
+      "days": 28,
+      "mountain": {
+        "x": 1800,
+        "y": 385,
+        "hei": 500,
+        "wid": 1061.3167241832846,
+        "tex": 177,
+        "targetRise": 42.926703341700936,
+        "referenceRise": 194.6473644957106,
+        "scale": 0.22053575424930502,
+        "renderWidth": 234.05828426516229
+      },
+      "explicitTrees": 4
+    },
+    {
+      "key": "2026-03",
+      "commits": 49,
+      "activeDays": 17,
+      "days": 31,
+      "mountain": {
+        "x": 2200,
+        "y": 385,
+        "hei": 500,
+        "wid": 3215.010980533247,
+        "tex": 153,
+        "targetRise": 14.961099538891558,
+        "referenceRise": 255.4734876633169,
+        "scale": 0.05856223937651204,
+        "renderWidth": 188.27824264010272
+      },
+      "explicitTrees": 3
+    },
+    {
+      "key": "2026-04",
+      "commits": 148,
+      "activeDays": 26,
+      "days": 30,
+      "mountain": {
+        "x": 2600,
+        "y": 385,
+        "hei": 500,
+        "wid": 741.2455438682305,
+        "tex": 189,
+        "targetRise": 136.48809841727643,
+        "referenceRise": 309.7730474059175,
+        "scale": 0.4406067589167189,
+        "renderWidth": 326.5977966452416
+      },
+      "explicitTrees": 4
+    },
+    {
+      "key": "2026-05",
+      "commits": 112,
+      "activeDays": 22,
+      "days": 31,
+      "mountain": {
+        "x": 3000,
+        "y": 385,
+        "hei": 500,
+        "wid": 1078.7842106254689,
+        "tex": 173,
+        "targetRise": 78.16411187665794,
+        "referenceRise": 306.9752120221909,
+        "scale": 0.25462678683973855,
+        "renderWidth": 274.68735724500687
+      },
+      "explicitTrees": 4
+    },
+    {
+      "key": "2026-06",
+      "commits": 89,
+      "activeDays": 20,
+      "days": 30,
+      "mountain": {
+        "x": 3400,
+        "y": 385,
+        "hei": 500,
+        "wid": 1102.403531547586,
+        "tex": 165,
+        "targetRise": 49.357296729512726,
+        "referenceRise": 224.50565874792093,
+        "scale": 0.21984878690711313,
+        "renderWidth": 242.36207909285417
+      },
+      "explicitTrees": 3
+    },
+    {
+      "key": "2026-07",
+      "commits": 237,
+      "activeDays": 24,
+      "days": 31,
+      "mountain": {
+        "x": 3800,
+        "y": 385,
+        "hei": 500,
+        "wid": 391.35398253584464,
+        "tex": 181,
+        "targetRise": 350,
+        "referenceRise": 297.7693345381427,
+        "scale": 1.1754064619947184,
+        "renderWidth": 460
+      },
+      "explicitTrees": 4
+    },
+    {
+      "key": "2026-08",
+      "commits": 134,
+      "activeDays": 22,
+      "days": 31,
+      "mountain": {
+        "x": 4200,
+        "y": 385,
+        "hei": 500,
+        "wid": 970.44157415119,
+        "tex": 173,
+        "targetRise": 111.8873399918104,
+        "referenceRise": 354.5581989702399,
+        "scale": 0.315568333539515,
+        "renderWidth": 306.24063035235474
+      },
+      "explicitTrees": 4
+    },
+    {
+      "key": "2026-09",
+      "commits": 78,
+      "activeDays": 22,
+      "days": 30,
+      "mountain": {
+        "x": 4600,
+        "y": 385,
+        "hei": 500,
+        "wid": 1839.280835698775,
+        "tex": 173,
+        "targetRise": 37.91059125140201,
+        "referenceRise": 306.9239928343449,
+        "scale": 0.12351784851131978,
+        "renderWidth": 227.18401163361494
+      },
+      "explicitTrees": 4
+    },
+    {
+      "key": "2026-10",
+      "commits": 93,
+      "activeDays": 20,
+      "days": 24,
+      "mountain": {
+        "x": 5000,
+        "y": 385,
+        "hei": 500,
+        "wid": 1423.2218554881197,
+        "tex": 165,
+        "targetRise": 53.89360679378304,
+        "referenceRise": 309.37261295904017,
+        "scale": 0.17420290140846553,
+        "renderWidth": 247.9293765739703
+      },
+      "explicitTrees": 3
+    }
+  ],
+  "features": [
+    {
+      "kind": "distant-ridge",
+      "month": "2025-10",
+      "x": -70,
+      "y": 370,
+      "args": {
+        "hei": 25.235450159340562,
+        "len": 550,
+        "seg": 5
+      },
+      "drawOrder": 0
+    },
+    {
+      "kind": "river",
+      "month": "2025-10",
+      "x": 200,
+      "y": 590,
+      "args": {
+        "len": 300,
+        "clu": 3,
+        "hei": 0.8
+      },
+      "drawOrder": 1
+    },
+    {
+      "kind": "distant-ridge",
+      "month": "2025-11",
+      "x": 330,
+      "y": 370,
+      "args": {
+        "hei": 28.066193095835782,
+        "len": 550,
+        "seg": 5
+      },
+      "drawOrder": 0
+    },
+    {
+      "kind": "river",
+      "month": "2025-11",
+      "x": 600,
+      "y": 597.5704007014994,
+      "args": {
+        "len": 300,
+        "clu": 3,
+        "hei": 0.8
+      },
+      "drawOrder": 1
+    },
+    {
+      "kind": "distant-ridge",
+      "month": "2025-12",
+      "x": 730,
+      "y": 370,
+      "args": {
+        "hei": 33.353807260232514,
+        "len": 550,
+        "seg": 5
+      },
+      "drawOrder": 0
+    },
+    {
+      "kind": "river",
+      "month": "2025-12",
+      "x": 1000,
+      "y": 585.1051368724583,
+      "args": {
+        "len": 300,
+        "clu": 3,
+        "hei": 0.8
+      },
+      "drawOrder": 1
+    },
+    {
+      "kind": "distant-ridge",
+      "month": "2026-01",
+      "x": 1130,
+      "y": 370,
+      "args": {
+        "hei": 35.14839146148231,
+        "len": 550,
+        "seg": 5
+      },
+      "drawOrder": 0
+    },
+    {
+      "kind": "river",
+      "month": "2026-01",
+      "x": 1400,
+      "y": 585.5945156592189,
+      "args": {
+        "len": 300,
+        "clu": 3,
+        "hei": 0.8
+      },
+      "drawOrder": 1
+    },
+    {
+      "kind": "distant-ridge",
+      "month": "2026-02",
+      "x": 1530,
+      "y": 370,
+      "args": {
+        "hei": 28.066193095835782,
+        "len": 550,
+        "seg": 5
+      },
+      "drawOrder": 0
+    },
+    {
+      "kind": "river",
+      "month": "2026-02",
+      "x": 1800,
+      "y": 597.7433573762519,
+      "args": {
+        "len": 300,
+        "clu": 3,
+        "hei": 0.8
+      },
+      "drawOrder": 1
+    },
+    {
+      "kind": "distant-ridge",
+      "month": "2026-03",
+      "x": 1930,
+      "y": 370,
+      "args": {
+        "hei": 26.06864996706368,
+        "len": 550,
+        "seg": 5
+      },
+      "drawOrder": 0
+    },
+    {
+      "kind": "river",
+      "month": "2026-03",
+      "x": 2200,
+      "y": 589.3987910363055,
+      "args": {
+        "len": 300,
+        "clu": 3,
+        "hei": 0.8
+      },
+      "drawOrder": 1
+    },
+    {
+      "kind": "distant-ridge",
+      "month": "2026-04",
+      "x": 2330,
+      "y": 370,
+      "args": {
+        "hei": 34.74914988694832,
+        "len": 550,
+        "seg": 5
+      },
+      "drawOrder": 0
+    },
+    {
+      "kind": "river",
+      "month": "2026-04",
+      "x": 2600,
+      "y": 582.6453717946825,
+      "args": {
+        "len": 300,
+        "clu": 3,
+        "hei": 0.8
+      },
+      "drawOrder": 1
+    },
+    {
+      "kind": "distant-ridge",
+      "month": "2026-05",
+      "x": 2730,
+      "y": 370,
+      "args": {
+        "hei": 30.58315084833271,
+        "len": 550,
+        "seg": 5
+      },
+      "drawOrder": 0
+    },
+    {
+      "kind": "river",
+      "month": "2026-05",
+      "x": 3000,
+      "y": 595.3565580975728,
+      "args": {
+        "len": 300,
+        "clu": 3,
+        "hei": 0.8
+      },
+      "drawOrder": 1
+    },
+    {
+      "kind": "distant-ridge",
+      "month": "2026-06",
+      "x": 3130,
+      "y": 370,
+      "args": {
+        "hei": 28.525521194965194,
+        "len": 550,
+        "seg": 5
+      },
+      "drawOrder": 0
+    },
+    {
+      "kind": "river",
+      "month": "2026-06",
+      "x": 3400,
+      "y": 593.8911895108304,
+      "args": {
+        "len": 300,
+        "clu": 3,
+        "hei": 0.8
+      },
+      "drawOrder": 1
+    },
+    {
+      "kind": "distant-ridge",
+      "month": "2026-07",
+      "x": 3530,
+      "y": 370,
+      "args": {
+        "hei": 50,
+        "len": 550,
+        "seg": 5
+      },
+      "drawOrder": 0
+    },
+    {
+      "kind": "river",
+      "month": "2026-07",
+      "x": 3800,
+      "y": 582.1274799593468,
+      "args": {
+        "len": 300,
+        "clu": 3,
+        "hei": 0.8
+      },
+      "drawOrder": 1
+    },
+    {
+      "kind": "distant-ridge",
+      "month": "2026-08",
+      "x": 3930,
+      "y": 370,
+      "args": {
+        "hei": 32.99195285655789,
+        "len": 550,
+        "seg": 5
+      },
+      "drawOrder": 0
+    },
+    {
+      "kind": "river",
+      "month": "2026-08",
+      "x": 4200,
+      "y": 591.1990176773036,
+      "args": {
+        "len": 300,
+        "clu": 3,
+        "hei": 0.8
+      },
+      "drawOrder": 1
+    },
+    {
+      "kind": "distant-ridge",
+      "month": "2026-09",
+      "x": 4330,
+      "y": 370,
+      "args": {
+        "hei": 27.707899375100144,
+        "len": 550,
+        "seg": 5
+      },
+      "drawOrder": 0
+    },
+    {
+      "kind": "river",
+      "month": "2026-09",
+      "x": 4600,
+      "y": 597.0972602295388,
+      "args": {
+        "len": 300,
+        "clu": 3,
+        "hei": 0.8
+      },
+      "drawOrder": 1
+    },
+    {
+      "kind": "distant-ridge",
+      "month": "2026-10",
+      "x": 4730,
+      "y": 370,
+      "args": {
+        "hei": 28.849543342413074,
+        "len": 550,
+        "seg": 5
+      },
+      "drawOrder": 0
+    },
+    {
+      "kind": "river",
+      "month": "2026-10",
+      "x": 5000,
+      "y": 584.212041951646,
+      "args": {
+        "len": 300,
+        "clu": 3,
+        "hei": 0.8
+      },
+      "drawOrder": 1
+    },
+    {
+      "kind": "monthly-mountain",
+      "month": "2025-10",
+      "x": 200,
+      "y": 385,
+      "args": {
+        "hei": 500,
+        "wid": 5622.609696912466,
+        "tex": 97,
+        "veg": true
+      },
+      "outerScale": 0.027631734834154313,
+      "targetRise": 6,
+      "referenceRise": 217.14163211293112,
+      "renderWidth": 155.36246022103
+    },
+    {
+      "kind": "grove-0",
+      "month": "2025-10",
+      "x": 88,
+      "y": 397,
+      "args": {
+        "hei": 45,
+        "wid": 2.2,
+        "col": "rgba(100,100,100,0.55)"
+      },
+      "originalFunction": "Tree.tree01"
+    },
+    {
+      "kind": "shore-rock",
+      "month": "2025-10",
+      "x": 70,
+      "y": 420,
+      "args": {
+        "wid": 85,
+        "hei": 30,
+        "tex": 20,
+        "sha": 3
+      }
+    },
+    {
+      "kind": "foreground-island",
+      "month": "2025-10",
+      "x": 125,
+      "y": 497,
+      "args": {
+        "hei": 70,
+        "wid": 285,
+        "tex": 55,
+        "cho": 0.4
+      }
+    },
+    {
+      "kind": "pavilion",
+      "month": "2025-10",
+      "x": 125,
+      "y": 472,
+      "args": {
+        "wid": 150,
+        "hei": 78,
+        "per": 6
+      }
+    },
+    {
+      "kind": "traveller-footing",
+      "month": "2025-10",
+      "x": 236,
+      "y": 494,
+      "args": {
+        "wid": 92,
+        "hei": 34,
+        "tex": 18,
+        "sha": 2
+      }
+    },
+    {
+      "kind": "traveller",
+      "month": "2025-10",
+      "x": 236,
+      "y": 475,
+      "args": {
+        "sca": 0.72,
+        "fli": false
+      },
+      "originalFunction": "Man.man + Man.hat02 + Man.stick01"
+    },
+    {
+      "kind": "ferry",
+      "month": "2025-10",
+      "x": 224,
+      "y": 545,
+      "args": {
+        "len": 112,
+        "sca": 1,
+        "fli": false
+      },
+      "outerScale": 1.2,
+      "originalFunction": "Arch.boat01 → Man.man + Man.hat02 + Man.stick01"
+    },
+    {
+      "kind": "ferry-water",
+      "month": "2025-10",
+      "x": 274,
+      "y": 570,
+      "args": {
+        "len": 180,
+        "clu": 4,
+        "hei": 0.65
+      }
+    },
+    {
+      "kind": "monthly-mountain",
+      "month": "2025-11",
+      "x": 600,
+      "y": 385,
+      "args": {
+        "hei": 500,
+        "wid": 1561.2616081643384,
+        "tex": 165,
+        "veg": true
+      },
+      "outerScale": 0.1499161210659356,
+      "targetRise": 42.926703341700936,
+      "referenceRise": 286.33814053140463,
+      "renderWidth": 234.05828426516229
+    },
+    {
+      "kind": "grove-0",
+      "month": "2025-11",
+      "x": 488,
+      "y": 402.89029689365526,
+      "args": {
+        "hei": 45,
+        "wid": 2.2,
+        "col": "rgba(100,100,100,0.55)"
+      },
+      "originalFunction": "Tree.tree01"
+    },
+    {
+      "kind": "grove-1",
+      "month": "2025-11",
+      "x": 539,
+      "y": 403.3650819877798,
+      "args": {
+        "hei": 54,
+        "wid": 2.2,
+        "col": "rgba(100,100,100,0.55)"
+      },
+      "originalFunction": "Tree.tree03"
+    },
+    {
+      "kind": "grove-2",
+      "month": "2025-11",
+      "x": 590,
+      "y": 397.9878400564191,
+      "args": {
+        "hei": 63,
+        "wid": 2.2,
+        "col": "rgba(100,100,100,0.55)"
+      },
+      "originalFunction": "Tree.tree07"
+    },
+    {
+      "kind": "shore-rock",
+      "month": "2025-11",
+      "x": 470,
+      "y": 420,
+      "args": {
+        "wid": 85,
+        "hei": 30,
+        "tex": 20,
+        "sha": 3
+      }
+    },
+    {
+      "kind": "shore-pagoda",
+      "month": "2025-11",
+      "x": 700,
+      "y": 415,
+      "args": {
+        "wid": 48,
+        "hei": 13,
+        "sto": 3,
+        "per": 5
+      }
+    },
+    {
+      "kind": "ferry",
+      "month": "2025-11",
+      "x": 624,
+      "y": 557.1583372499207,
+      "args": {
+        "len": 112,
+        "sca": 1,
+        "fli": true
+      },
+      "outerScale": 1.2,
+      "originalFunction": "Arch.boat01 → Man.man + Man.hat02 + Man.stick01"
+    },
+    {
+      "kind": "ferry-water",
+      "month": "2025-11",
+      "x": 674,
+      "y": 582.1583372499207,
+      "args": {
+        "len": 180,
+        "clu": 4,
+        "hei": 0.65
+      }
+    },
+    {
+      "kind": "monthly-mountain",
+      "month": "2025-12",
+      "x": 1000,
+      "y": 385,
+      "args": {
+        "hei": 500,
+        "wid": 673.6471981335468,
+        "tex": 185,
+        "veg": true
+      },
+      "outerScale": 0.4610509948634997,
+      "targetRise": 116.9533016432552,
+      "referenceRise": 253.66673740261808,
+      "renderWidth": 310.58571088648085
+    },
+    {
+      "kind": "grove-0",
+      "month": "2025-12",
+      "x": 888,
+      "y": 403.3650819877798,
+      "args": {
+        "hei": 45,
+        "wid": 2.2,
+        "col": "rgba(100,100,100,0.55)"
+      },
+      "originalFunction": "Tree.tree01"
+    },
+    {
+      "kind": "grove-1",
+      "month": "2025-12",
+      "x": 939,
+      "y": 397.9878400564191,
+      "args": {
+        "hei": 54,
+        "wid": 2.2,
+        "col": "rgba(100,100,100,0.55)"
+      },
+      "originalFunction": "Tree.tree03"
+    },
+    {
+      "kind": "grove-2",
+      "month": "2025-12",
+      "x": 990,
+      "y": 391.7023825328445,
+      "args": {
+        "hei": 63,
+        "wid": 2.2,
+        "col": "rgba(100,100,100,0.55)"
+      },
+      "originalFunction": "Tree.tree07"
+    },
+    {
+      "kind": "grove-3",
+      "month": "2025-12",
+      "x": 1041,
+      "y": 390.28753007735804,
+      "args": {
+        "hei": 72,
+        "wid": 2.2,
+        "col": "rgba(100,100,100,0.55)"
+      },
+      "originalFunction": "Tree.tree01"
+    },
+    {
+      "kind": "shore-rock",
+      "month": "2025-12",
+      "x": 870,
+      "y": 420,
+      "args": {
+        "wid": 85,
+        "hei": 30,
+        "tex": 20,
+        "sha": 3
+      }
+    },
+    {
+      "kind": "ferry",
+      "month": "2025-12",
+      "x": 1024,
+      "y": 527.0690370409549,
+      "args": {
+        "len": 112,
+        "sca": 1,
+        "fli": false
+      },
+      "outerScale": 1.2,
+      "originalFunction": "Arch.boat01 → Man.man + Man.hat02 + Man.stick01"
+    },
+    {
+      "kind": "ferry-water",
+      "month": "2025-12",
+      "x": 1074,
+      "y": 552.0690370409549,
+      "args": {
+        "len": 180,
+        "clu": 4,
+        "hei": 0.65
+      }
+    },
+    {
+      "kind": "monthly-mountain",
+      "month": "2026-01",
+      "x": 1400,
+      "y": 385,
+      "args": {
+        "hei": 500,
+        "wid": 508.1193427463217,
+        "tex": 185,
+        "veg": true
+      },
+      "outerScale": 0.6513938447084258,
+      "targetRise": 142.07748046075235,
+      "referenceRise": 218.11302273565158,
+      "renderWidth": 330.98581224224483
+    },
+    {
+      "kind": "grove-0",
+      "month": "2026-01",
+      "x": 1288,
+      "y": 397.9878400564191,
+      "args": {
+        "hei": 45,
+        "wid": 2.2,
+        "col": "rgba(100,100,100,0.55)"
+      },
+      "originalFunction": "Tree.tree01"
+    },
+    {
+      "kind": "grove-1",
+      "month": "2026-01",
+      "x": 1339,
+      "y": 391.7023825328445,
+      "args": {
+        "hei": 54,
+        "wid": 2.2,
+        "col": "rgba(100,100,100,0.55)"
+      },
+      "originalFunction": "Tree.tree03"
+    },
+    {
+      "kind": "grove-2",
+      "month": "2026-01",
+      "x": 1390,
+      "y": 390.28753007735804,
+      "args": {
+        "hei": 63,
+        "wid": 2.2,
+        "col": "rgba(100,100,100,0.55)"
+      },
+      "originalFunction": "Tree.tree07"
+    },
+    {
+      "kind": "grove-3",
+      "month": "2026-01",
+      "x": 1441,
+      "y": 395.0440915126075,
+      "args": {
+        "hei": 72,
+        "wid": 2.2,
+        "col": "rgba(100,100,100,0.55)"
+      },
+      "originalFunction": "Tree.tree01"
+    },
+    {
+      "kind": "shore-rock",
+      "month": "2026-01",
+      "x": 1270,
+      "y": 420,
+      "args": {
+        "wid": 85,
+        "hei": 30,
+        "tex": 20,
+        "sha": 3
+      }
+    },
+    {
+      "kind": "foreground-island",
+      "month": "2026-01",
+      "x": 1325,
+      "y": 497,
+      "args": {
+        "hei": 70,
+        "wid": 285,
+        "tex": 55,
+        "cho": 0.4
+      }
+    },
+    {
+      "kind": "pavilion",
+      "month": "2026-01",
+      "x": 1325,
+      "y": 472,
+      "args": {
+        "wid": 150,
+        "hei": 78,
+        "per": 6
+      }
+    },
+    {
+      "kind": "traveller-footing",
+      "month": "2026-01",
+      "x": 1436,
+      "y": 494,
+      "args": {
+        "wid": 92,
+        "hei": 34,
+        "tex": 18,
+        "sha": 2
+      }
+    },
+    {
+      "kind": "traveller",
+      "month": "2026-01",
+      "x": 1436,
+      "y": 475,
+      "args": {
+        "sca": 0.72,
+        "fli": false
+      },
+      "originalFunction": "Man.man + Man.hat02 + Man.stick01"
+    },
+    {
+      "kind": "ferry",
+      "month": "2026-01",
+      "x": 1424,
+      "y": 559.2860215492848,
+      "args": {
+        "len": 112,
+        "sca": 1,
+        "fli": true
+      },
+      "outerScale": 1.2,
+      "originalFunction": "Arch.boat01 → Man.man + Man.hat02 + Man.stick01"
+    },
+    {
+      "kind": "ferry-water",
+      "month": "2026-01",
+      "x": 1474,
+      "y": 584.2860215492848,
+      "args": {
+        "len": 180,
+        "clu": 4,
+        "hei": 0.65
+      }
+    },
+    {
+      "kind": "monthly-mountain",
+      "month": "2026-02",
+      "x": 1800,
+      "y": 385,
+      "args": {
+        "hei": 500,
+        "wid": 1061.3167241832846,
+        "tex": 177,
+        "veg": true
+      },
+      "outerScale": 0.22053575424930502,
+      "targetRise": 42.926703341700936,
+      "referenceRise": 194.6473644957106,
+      "renderWidth": 234.05828426516229
+    },
+    {
+      "kind": "grove-0",
+      "month": "2026-02",
+      "x": 1688,
+      "y": 391.7023825328445,
+      "args": {
+        "hei": 45,
+        "wid": 2.2,
+        "col": "rgba(100,100,100,0.55)"
+      },
+      "originalFunction": "Tree.tree01"
+    },
+    {
+      "kind": "grove-1",
+      "month": "2026-02",
+      "x": 1739,
+      "y": 390.28753007735804,
+      "args": {
+        "hei": 54,
+        "wid": 2.2,
+        "col": "rgba(100,100,100,0.55)"
+      },
+      "originalFunction": "Tree.tree03"
+    },
+    {
+      "kind": "grove-2",
+      "month": "2026-02",
+      "x": 1790,
+      "y": 395.0440915126075,
+      "args": {
+        "hei": 63,
+        "wid": 2.2,
+        "col": "rgba(100,100,100,0.55)"
+      },
+      "originalFunction": "Tree.tree07"
+    },
+    {
+      "kind": "grove-3",
+      "month": "2026-02",
+      "x": 1841,
+      "y": 401.5989061910315,
+      "args": {
+        "hei": 72,
+        "wid": 2.2,
+        "col": "rgba(100,100,100,0.55)"
+      },
+      "originalFunction": "Tree.tree01"
+    },
+    {
+      "kind": "shore-rock",
+      "month": "2026-02",
+      "x": 1670,
+      "y": 420,
+      "args": {
+        "wid": 85,
+        "hei": 30,
+        "tex": 20,
+        "sha": 3
+      }
+    },
+    {
+      "kind": "shore-pagoda",
+      "month": "2026-02",
+      "x": 1900,
+      "y": 415,
+      "args": {
+        "wid": 48,
+        "hei": 13,
+        "sto": 3,
+        "per": 5
+      }
+    },
+    {
+      "kind": "ferry",
+      "month": "2026-02",
+      "x": 1824,
+      "y": 541.8621179379863,
+      "args": {
+        "len": 112,
+        "sca": 1,
+        "fli": false
+      },
+      "outerScale": 1.2,
+      "originalFunction": "Arch.boat01 → Man.man + Man.hat02 + Man.stick01"
+    },
+    {
+      "kind": "ferry-water",
+      "month": "2026-02",
+      "x": 1874,
+      "y": 566.8621179379863,
+      "args": {
+        "len": 180,
+        "clu": 4,
+        "hei": 0.65
+      }
+    },
+    {
+      "kind": "monthly-mountain",
+      "month": "2026-03",
+      "x": 2200,
+      "y": 385,
+      "args": {
+        "hei": 500,
+        "wid": 3215.010980533247,
+        "tex": 153,
+        "veg": true
+      },
+      "outerScale": 0.05856223937651204,
+      "targetRise": 14.961099538891558,
+      "referenceRise": 255.4734876633169,
+      "renderWidth": 188.27824264010272
+    },
+    {
+      "kind": "grove-0",
+      "month": "2026-03",
+      "x": 2088,
+      "y": 390.28753007735804,
+      "args": {
+        "hei": 45,
+        "wid": 2.2,
+        "col": "rgba(100,100,100,0.55)"
+      },
+      "originalFunction": "Tree.tree01"
+    },
+    {
+      "kind": "grove-1",
+      "month": "2026-03",
+      "x": 2139,
+      "y": 395.0440915126075,
+      "args": {
+        "hei": 54,
+        "wid": 2.2,
+        "col": "rgba(100,100,100,0.55)"
+      },
+      "originalFunction": "Tree.tree03"
+    },
+    {
+      "kind": "grove-2",
+      "month": "2026-03",
+      "x": 2190,
+      "y": 401.5989061910315,
+      "args": {
+        "hei": 63,
+        "wid": 2.2,
+        "col": "rgba(100,100,100,0.55)"
+      },
+      "originalFunction": "Tree.tree07"
+    },
+    {
+      "kind": "shore-rock",
+      "month": "2026-03",
+      "x": 2070,
+      "y": 420,
+      "args": {
+        "wid": 85,
+        "hei": 30,
+        "tex": 20,
+        "sha": 3
+      }
+    },
+    {
+      "kind": "ferry",
+      "month": "2026-03",
+      "x": 2224,
+      "y": 535.3416874759922,
+      "args": {
+        "len": 112,
+        "sca": 1,
+        "fli": true
+      },
+      "outerScale": 1.2,
+      "originalFunction": "Arch.boat01 → Man.man + Man.hat02 + Man.stick01"
+    },
+    {
+      "kind": "ferry-water",
+      "month": "2026-03",
+      "x": 2274,
+      "y": 560.3416874759922,
+      "args": {
+        "len": 180,
+        "clu": 4,
+        "hei": 0.65
+      }
+    },
+    {
+      "kind": "monthly-mountain",
+      "month": "2026-04",
+      "x": 2600,
+      "y": 385,
+      "args": {
+        "hei": 500,
+        "wid": 741.2455438682305,
+        "tex": 189,
+        "veg": true
+      },
+      "outerScale": 0.4406067589167189,
+      "targetRise": 136.48809841727643,
+      "referenceRise": 309.7730474059175,
+      "renderWidth": 326.5977966452416
+    },
+    {
+      "kind": "grove-0",
+      "month": "2026-04",
+      "x": 2488,
+      "y": 395.0440915126075,
+      "args": {
+        "hei": 45,
+        "wid": 2.2,
+        "col": "rgba(100,100,100,0.55)"
+      },
+      "originalFunction": "Tree.tree01"
+    },
+    {
+      "kind": "grove-1",
+      "month": "2026-04",
+      "x": 2539,
+      "y": 401.5989061910315,
+      "args": {
+        "hei": 54,
+        "wid": 2.2,
+        "col": "rgba(100,100,100,0.55)"
+      },
+      "originalFunction": "Tree.tree03"
+    },
+    {
+      "kind": "grove-2",
+      "month": "2026-04",
+      "x": 2590,
+      "y": 403.92550772636366,
+      "args": {
+        "hei": 63,
+        "wid": 2.2,
+        "col": "rgba(100,100,100,0.55)"
+      },
+      "originalFunction": "Tree.tree07"
+    },
+    {
+      "kind": "grove-3",
+      "month": "2026-04",
+      "x": 2641,
+      "y": 399.8848293966923,
+      "args": {
+        "hei": 72,
+        "wid": 2.2,
+        "col": "rgba(100,100,100,0.55)"
+      },
+      "originalFunction": "Tree.tree01"
+    },
+    {
+      "kind": "shore-rock",
+      "month": "2026-04",
+      "x": 2470,
+      "y": 420,
+      "args": {
+        "wid": 85,
+        "hei": 30,
+        "tex": 20,
+        "sha": 3
+      }
+    },
+    {
+      "kind": "foreground-island",
+      "month": "2026-04",
+      "x": 2525,
+      "y": 497,
+      "args": {
+        "hei": 70,
+        "wid": 285,
+        "tex": 55,
+        "cho": 0.4
+      }
+    },
+    {
+      "kind": "pavilion",
+      "month": "2026-04",
+      "x": 2525,
+      "y": 472,
+      "args": {
+        "wid": 150,
+        "hei": 78,
+        "per": 6
+      }
+    },
+    {
+      "kind": "traveller-footing",
+      "month": "2026-04",
+      "x": 2636,
+      "y": 494,
+      "args": {
+        "wid": 92,
+        "hei": 34,
+        "tex": 18,
+        "sha": 2
+      }
+    },
+    {
+      "kind": "traveller",
+      "month": "2026-04",
+      "x": 2636,
+      "y": 475,
+      "args": {
+        "sca": 0.72,
+        "fli": false
+      },
+      "originalFunction": "Man.man + Man.hat02 + Man.stick01"
+    },
+    {
+      "kind": "ferry",
+      "month": "2026-04",
+      "x": 2624,
+      "y": 562.381839977887,
+      "args": {
+        "len": 112,
+        "sca": 1,
+        "fli": false
+      },
+      "outerScale": 1.2,
+      "originalFunction": "Arch.boat01 → Man.man + Man.hat02 + Man.stick01"
+    },
+    {
+      "kind": "ferry-water",
+      "month": "2026-04",
+      "x": 2674,
+      "y": 587.381839977887,
+      "args": {
+        "len": 180,
+        "clu": 4,
+        "hei": 0.65
+      }
+    },
+    {
+      "kind": "monthly-mountain",
+      "month": "2026-05",
+      "x": 3000,
+      "y": 385,
+      "args": {
+        "hei": 500,
+        "wid": 1078.7842106254689,
+        "tex": 173,
+        "veg": true
+      },
+      "outerScale": 0.25462678683973855,
+      "targetRise": 78.16411187665794,
+      "referenceRise": 306.9752120221909,
+      "renderWidth": 274.68735724500687
+    },
+    {
+      "kind": "grove-0",
+      "month": "2026-05",
+      "x": 2888,
+      "y": 401.5989061910315,
+      "args": {
+        "hei": 45,
+        "wid": 2.2,
+        "col": "rgba(100,100,100,0.55)"
+      },
+      "originalFunction": "Tree.tree01"
+    },
+    {
+      "kind": "grove-1",
+      "month": "2026-05",
+      "x": 2939,
+      "y": 403.92550772636366,
+      "args": {
+        "hei": 54,
+        "wid": 2.2,
+        "col": "rgba(100,100,100,0.55)"
+      },
+      "originalFunction": "Tree.tree03"
+    },
+    {
+      "kind": "grove-2",
+      "month": "2026-05",
+      "x": 2990,
+      "y": 399.8848293966923,
+      "args": {
+        "hei": 63,
+        "wid": 2.2,
+        "col": "rgba(100,100,100,0.55)"
+      },
+      "originalFunction": "Tree.tree07"
+    },
+    {
+      "kind": "grove-3",
+      "month": "2026-05",
+      "x": 3041,
+      "y": 393.1918522237744,
+      "args": {
+        "hei": 72,
+        "wid": 2.2,
+        "col": "rgba(100,100,100,0.55)"
+      },
+      "originalFunction": "Tree.tree01"
+    },
+    {
+      "kind": "shore-rock",
+      "month": "2026-05",
+      "x": 2870,
+      "y": 420,
+      "args": {
+        "wid": 85,
+        "hei": 30,
+        "tex": 20,
+        "sha": 3
+      }
+    },
+    {
+      "kind": "shore-pagoda",
+      "month": "2026-05",
+      "x": 3100,
+      "y": 415,
+      "args": {
+        "wid": 48,
+        "hei": 13,
+        "sto": 4,
+        "per": 5
+      }
+    },
+    {
+      "kind": "ferry",
+      "month": "2026-05",
+      "x": 3024,
+      "y": 529.023793395533,
+      "args": {
+        "len": 112,
+        "sca": 1,
+        "fli": true
+      },
+      "outerScale": 1.2,
+      "originalFunction": "Arch.boat01 → Man.man + Man.hat02 + Man.stick01"
+    },
+    {
+      "kind": "ferry-water",
+      "month": "2026-05",
+      "x": 3074,
+      "y": 554.023793395533,
+      "args": {
+        "len": 180,
+        "clu": 4,
+        "hei": 0.65
+      }
+    },
+    {
+      "kind": "monthly-mountain",
+      "month": "2026-06",
+      "x": 3400,
+      "y": 385,
+      "args": {
+        "hei": 500,
+        "wid": 1102.403531547586,
+        "tex": 165,
+        "veg": true
+      },
+      "outerScale": 0.21984878690711313,
+      "targetRise": 49.357296729512726,
+      "referenceRise": 224.50565874792093,
+      "renderWidth": 242.36207909285417
+    },
+    {
+      "kind": "grove-0",
+      "month": "2026-06",
+      "x": 3288,
+      "y": 403.92550772636366,
+      "args": {
+        "hei": 45,
+        "wid": 2.2,
+        "col": "rgba(100,100,100,0.55)"
+      },
+      "originalFunction": "Tree.tree01"
+    },
+    {
+      "kind": "grove-1",
+      "month": "2026-06",
+      "x": 3339,
+      "y": 399.8848293966923,
+      "args": {
+        "hei": 54,
+        "wid": 2.2,
+        "col": "rgba(100,100,100,0.55)"
+      },
+      "originalFunction": "Tree.tree03"
+    },
+    {
+      "kind": "grove-2",
+      "month": "2026-06",
+      "x": 3390,
+      "y": 393.1918522237744,
+      "args": {
+        "hei": 63,
+        "wid": 2.2,
+        "col": "rgba(100,100,100,0.55)"
+      },
+      "originalFunction": "Tree.tree07"
+    },
+    {
+      "kind": "shore-rock",
+      "month": "2026-06",
+      "x": 3270,
+      "y": 420,
+      "args": {
+        "wid": 85,
+        "hei": 30,
+        "tex": 20,
+        "sha": 3
+      }
+    },
+    {
+      "kind": "ferry",
+      "month": "2026-06",
+      "x": 3424,
+      "y": 551.1796687187581,
+      "args": {
+        "len": 112,
+        "sca": 1,
+        "fli": false
+      },
+      "outerScale": 1.2,
+      "originalFunction": "Arch.boat01 → Man.man + Man.hat02 + Man.stick01"
+    },
+    {
+      "kind": "ferry-water",
+      "month": "2026-06",
+      "x": 3474,
+      "y": 576.1796687187581,
+      "args": {
+        "len": 180,
+        "clu": 4,
+        "hei": 0.65
+      }
+    },
+    {
+      "kind": "monthly-mountain",
+      "month": "2026-07",
+      "x": 3800,
+      "y": 385,
+      "args": {
+        "hei": 500,
+        "wid": 391.35398253584464,
+        "tex": 181,
+        "veg": true
+      },
+      "outerScale": 1.1754064619947184,
+      "targetRise": 350,
+      "referenceRise": 297.7693345381427,
+      "renderWidth": 460
+    },
+    {
+      "kind": "grove-0",
+      "month": "2026-07",
+      "x": 3688,
+      "y": 399.8848293966923,
+      "args": {
+        "hei": 45,
+        "wid": 2.2,
+        "col": "rgba(100,100,100,0.55)"
+      },
+      "originalFunction": "Tree.tree01"
+    },
+    {
+      "kind": "grove-1",
+      "month": "2026-07",
+      "x": 3739,
+      "y": 393.1918522237744,
+      "args": {
+        "hei": 54,
+        "wid": 2.2,
+        "col": "rgba(100,100,100,0.55)"
+      },
+      "originalFunction": "Tree.tree03"
+    },
+    {
+      "kind": "grove-2",
+      "month": "2026-07",
+      "x": 3790,
+      "y": 390.00006855414506,
+      "args": {
+        "hei": 63,
+        "wid": 2.2,
+        "col": "rgba(100,100,100,0.55)"
+      },
+      "originalFunction": "Tree.tree07"
+    },
+    {
+      "kind": "grove-3",
+      "month": "2026-07",
+      "x": 3841,
+      "y": 393.24398957399694,
+      "args": {
+        "hei": 72,
+        "wid": 2.2,
+        "col": "rgba(100,100,100,0.55)"
+      },
+      "originalFunction": "Tree.tree01"
+    },
+    {
+      "kind": "shore-rock",
+      "month": "2026-07",
+      "x": 3670,
+      "y": 420,
+      "args": {
+        "wid": 85,
+        "hei": 30,
+        "tex": 20,
+        "sha": 3
+      }
+    },
+    {
+      "kind": "foreground-island",
+      "month": "2026-07",
+      "x": 3725,
+      "y": 497,
+      "args": {
+        "hei": 70,
+        "wid": 285,
+        "tex": 55,
+        "cho": 0.4
+      }
+    },
+    {
+      "kind": "pavilion",
+      "month": "2026-07",
+      "x": 3725,
+      "y": 472,
+      "args": {
+        "wid": 150,
+        "hei": 78,
+        "per": 6
+      }
+    },
+    {
+      "kind": "traveller-footing",
+      "month": "2026-07",
+      "x": 3836,
+      "y": 494,
+      "args": {
+        "wid": 92,
+        "hei": 34,
+        "tex": 18,
+        "sha": 2
+      }
+    },
+    {
+      "kind": "traveller",
+      "month": "2026-07",
+      "x": 3836,
+      "y": 475,
+      "args": {
+        "sca": 0.72,
+        "fli": false
+      },
+      "originalFunction": "Man.man + Man.hat02 + Man.stick01"
+    },
+    {
+      "kind": "ferry",
+      "month": "2026-07",
+      "x": 3824,
+      "y": 551.862508849789,
+      "args": {
+        "len": 112,
+        "sca": 1,
+        "fli": true
+      },
+      "outerScale": 1.2,
+      "originalFunction": "Arch.boat01 → Man.man + Man.hat02 + Man.stick01"
+    },
+    {
+      "kind": "ferry-water",
+      "month": "2026-07",
+      "x": 3874,
+      "y": 576.862508849789,
+      "args": {
+        "len": 180,
+        "clu": 4,
+        "hei": 0.65
+      }
+    },
+    {
+      "kind": "monthly-mountain",
+      "month": "2026-08",
+      "x": 4200,
+      "y": 385,
+      "args": {
+        "hei": 500,
+        "wid": 970.44157415119,
+        "tex": 173,
+        "veg": true
+      },
+      "outerScale": 0.315568333539515,
+      "targetRise": 111.8873399918104,
+      "referenceRise": 354.5581989702399,
+      "renderWidth": 306.24063035235474
+    },
+    {
+      "kind": "grove-0",
+      "month": "2026-08",
+      "x": 4088,
+      "y": 393.1918522237744,
+      "args": {
+        "hei": 45,
+        "wid": 2.2,
+        "col": "rgba(100,100,100,0.55)"
+      },
+      "originalFunction": "Tree.tree01"
+    },
+    {
+      "kind": "grove-1",
+      "month": "2026-08",
+      "x": 4139,
+      "y": 390.00006855414506,
+      "args": {
+        "hei": 54,
+        "wid": 2.2,
+        "col": "rgba(100,100,100,0.55)"
+      },
+      "originalFunction": "Tree.tree03"
+    },
+    {
+      "kind": "grove-2",
+      "month": "2026-08",
+      "x": 4190,
+      "y": 393.24398957399694,
+      "args": {
+        "hei": 63,
+        "wid": 2.2,
+        "col": "rgba(100,100,100,0.55)"
+      },
+      "originalFunction": "Tree.tree07"
+    },
+    {
+      "kind": "grove-3",
+      "month": "2026-08",
+      "x": 4241,
+      "y": 399.9411692577865,
+      "args": {
+        "hei": 72,
+        "wid": 2.2,
+        "col": "rgba(100,100,100,0.55)"
+      },
+      "originalFunction": "Tree.tree01"
+    },
+    {
+      "kind": "shore-rock",
+      "month": "2026-08",
+      "x": 4070,
+      "y": 420,
+      "args": {
+        "wid": 85,
+        "hei": 30,
+        "tex": 20,
+        "sha": 3
+      }
+    },
+    {
+      "kind": "shore-pagoda",
+      "month": "2026-08",
+      "x": 4300,
+      "y": 415,
+      "args": {
+        "wid": 48,
+        "hei": 13,
+        "sto": 4,
+        "per": 5
+      }
+    },
+    {
+      "kind": "ferry",
+      "month": "2026-08",
+      "x": 4224,
+      "y": 528.6995894838808,
+      "args": {
+        "len": 112,
+        "sca": 1,
+        "fli": false
+      },
+      "outerScale": 1.2,
+      "originalFunction": "Arch.boat01 → Man.man + Man.hat02 + Man.stick01"
+    },
+    {
+      "kind": "ferry-water",
+      "month": "2026-08",
+      "x": 4274,
+      "y": 553.6995894838808,
+      "args": {
+        "len": 180,
+        "clu": 4,
+        "hei": 0.65
+      }
+    },
+    {
+      "kind": "monthly-mountain",
+      "month": "2026-09",
+      "x": 4600,
+      "y": 385,
+      "args": {
+        "hei": 500,
+        "wid": 1839.280835698775,
+        "tex": 173,
+        "veg": true
+      },
+      "outerScale": 0.12351784851131978,
+      "targetRise": 37.91059125140201,
+      "referenceRise": 306.9239928343449,
+      "renderWidth": 227.18401163361494
+    },
+    {
+      "kind": "grove-0",
+      "month": "2026-09",
+      "x": 4488,
+      "y": 390.00006855414506,
+      "args": {
+        "hei": 45,
+        "wid": 2.2,
+        "col": "rgba(100,100,100,0.55)"
+      },
+      "originalFunction": "Tree.tree01"
+    },
+    {
+      "kind": "grove-1",
+      "month": "2026-09",
+      "x": 4539,
+      "y": 393.24398957399694,
+      "args": {
+        "hei": 54,
+        "wid": 2.2,
+        "col": "rgba(100,100,100,0.55)"
+      },
+      "originalFunction": "Tree.tree03"
+    },
+    {
+      "kind": "grove-2",
+      "month": "2026-09",
+      "x": 4590,
+      "y": 399.9411692577865,
+      "args": {
+        "hei": 63,
+        "wid": 2.2,
+        "col": "rgba(100,100,100,0.55)"
+      },
+      "originalFunction": "Tree.tree07"
+    },
+    {
+      "kind": "grove-3",
+      "month": "2026-09",
+      "x": 4641,
+      "y": 403.9342514898641,
+      "args": {
+        "hei": 72,
+        "wid": 2.2,
+        "col": "rgba(100,100,100,0.55)"
+      },
+      "originalFunction": "Tree.tree01"
+    },
+    {
+      "kind": "shore-rock",
+      "month": "2026-09",
+      "x": 4470,
+      "y": 420,
+      "args": {
+        "wid": 85,
+        "hei": 30,
+        "tex": 20,
+        "sha": 3
+      }
+    },
+    {
+      "kind": "ferry",
+      "month": "2026-09",
+      "x": 4624,
+      "y": 562.1771317008686,
+      "args": {
+        "len": 112,
+        "sca": 1,
+        "fli": true
+      },
+      "outerScale": 1.2,
+      "originalFunction": "Arch.boat01 → Man.man + Man.hat02 + Man.stick01"
+    },
+    {
+      "kind": "ferry-water",
+      "month": "2026-09",
+      "x": 4674,
+      "y": 587.1771317008686,
+      "args": {
+        "len": 180,
+        "clu": 4,
+        "hei": 0.65
+      }
+    },
+    {
+      "kind": "monthly-mountain",
+      "month": "2026-10",
+      "x": 5000,
+      "y": 385,
+      "args": {
+        "hei": 500,
+        "wid": 1423.2218554881197,
+        "tex": 165,
+        "veg": true
+      },
+      "outerScale": 0.17420290140846553,
+      "targetRise": 53.89360679378304,
+      "referenceRise": 309.37261295904017,
+      "renderWidth": 247.9293765739703
+    },
+    {
+      "kind": "grove-0",
+      "month": "2026-10",
+      "x": 4888,
+      "y": 393.24398957399694,
+      "args": {
+        "hei": 45,
+        "wid": 2.2,
+        "col": "rgba(100,100,100,0.55)"
+      },
+      "originalFunction": "Tree.tree01"
+    },
+    {
+      "kind": "grove-1",
+      "month": "2026-10",
+      "x": 4939,
+      "y": 399.9411692577865,
+      "args": {
+        "hei": 54,
+        "wid": 2.2,
+        "col": "rgba(100,100,100,0.55)"
+      },
+      "originalFunction": "Tree.tree03"
+    },
+    {
+      "kind": "grove-2",
+      "month": "2026-10",
+      "x": 4990,
+      "y": 403.9342514898641,
+      "args": {
+        "hei": 63,
+        "wid": 2.2,
+        "col": "rgba(100,100,100,0.55)"
+      },
+      "originalFunction": "Tree.tree07"
+    },
+    {
+      "kind": "shore-rock",
+      "month": "2026-10",
+      "x": 4870,
+      "y": 420,
+      "args": {
+        "wid": 85,
+        "hei": 30,
+        "tex": 20,
+        "sha": 3
+      }
+    },
+    {
+      "kind": "foreground-island",
+      "month": "2026-10",
+      "x": 4925,
+      "y": 497,
+      "args": {
+        "hei": 70,
+        "wid": 285,
+        "tex": 55,
+        "cho": 0.4
+      }
+    },
+    {
+      "kind": "pavilion",
+      "month": "2026-10",
+      "x": 4925,
+      "y": 472,
+      "args": {
+        "wid": 150,
+        "hei": 78,
+        "per": 6
+      }
+    },
+    {
+      "kind": "traveller-footing",
+      "month": "2026-10",
+      "x": 5036,
+      "y": 494,
+      "args": {
+        "wid": 92,
+        "hei": 34,
+        "tex": 18,
+        "sha": 2
+      }
+    },
+    {
+      "kind": "traveller",
+      "month": "2026-10",
+      "x": 5036,
+      "y": 475,
+      "args": {
+        "sca": 0.72,
+        "fli": false
+      },
+      "originalFunction": "Man.man + Man.hat02 + Man.stick01"
+    },
+    {
+      "kind": "ferry",
+      "month": "2026-10",
+      "x": 5024,
+      "y": 535.9677925816297,
+      "args": {
+        "len": 112,
+        "sca": 1,
+        "fli": false
+      },
+      "outerScale": 1.2,
+      "originalFunction": "Arch.boat01 → Man.man + Man.hat02 + Man.stick01"
+    },
+    {
+      "kind": "ferry-water",
+      "month": "2026-10",
+      "x": 5074,
+      "y": 560.9677925816297,
+      "args": {
+        "len": 180,
+        "clu": 4,
+        "hei": 0.65
+      }
+    }
+  ],
+  "mapping": {
+    "mountains": "Visible terrain rise = max(6,350 × (monthly commits / peak month)^2), zero for zero commits. Original ret:1 contour measures noise; a complete original mountain rendered at hei500 is uniformly scaled to the target rise. Above the floor,150:100:50 commits gives9:4:1 mountain heights.",
+    "mountainWidth": "Final width =130+330 × (monthly commits / peak month)^1.1, compensated inside the original renderer before uniform scaling.",
+    "texture": "Original texture count =85+4 × monthly active days.",
+    "groves": "ceil(active days /7) explicitly planted original foreground trees per month; additional vegetation is generated internally by the original renderer.",
+    "boats": "One original boat01, including its original ferryman, for each active month.",
+    "figures": "People and pavilions are original decorative artwork, not a count of contributors.",
+    "seed": "Stable hash of month and feature kind; commit totals do not reseed the scenery."
+  }
+}
