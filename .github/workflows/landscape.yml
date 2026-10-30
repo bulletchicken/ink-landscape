@@ -1,0 +1,61 @@
+name: Refresh landscape
+
+on:
+  schedule:
+    - cron: '23 6 * * *'
+  workflow_dispatch:
+    inputs:
+      username:
+        description: 'GitHub username (blank uses LANDSCAPE_USER or the repository owner)'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: landscape-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check the generator
+        run: python3 -m unittest discover -s tests -v
+      - name: Fetch profile contribution counts
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          LANDSCAPE_USER: ${{ inputs.username || vars.LANDSCAPE_USER || github.repository_owner }}
+        run: python3 scripts/fetch_activity.py --user "$LANDSCAPE_USER"
+      - name: Render all themes
+        run: python3 scripts/generate.py --theme all
+      - name: Publish refreshed images
+        env:
+          LANDSCAPE_BRANCH: ${{ github.ref_name }}
+        run: |
+          git config user.name 'ink-landscape[bot]'
+          git config user.email 'ink-landscape@users.noreply.github.com'
+          git add data/activity.json assets/
+          if git diff --cached --quiet; then
+            echo 'The landscape is already up to date.'
+            exit 0
+          fi
+          git commit -m 'Refresh contribution landscapes'
+          for attempt in 1 2 3; do
+            git fetch --no-tags origin "$LANDSCAPE_BRANCH"
+            git rebase FETCH_HEAD
+            if git push origin "HEAD:refs/heads/$LANDSCAPE_BRANCH"; then
+              exit 0
+            fi
+          done
+          echo 'Remote changes were preserved; publishing will retry on the next run.' >&2
+          exit 1

@@ -2,7 +2,7 @@
 """Fetch the same profile contribution calendar used by the 3D README.
 
 Only aggregate daily counts are requested and saved. GitHub includes private
-contribution counts according to the user's profile settings; no repository
+counts according to profile settings and the request's credentials; no repository
 names, commit details, or credentials are written to the generated data.
 Uses the standard library with GITHUB_TOKEN/GH_TOKEN, or an authenticated gh CLI.
 """
@@ -39,7 +39,7 @@ def graphql(variables):
         request = urllib.request.Request(
             "https://api.github.com/graphql", data=payload,
             headers={"Authorization": f"Bearer {token}",
-                     "Content-Type": "application/json", "User-Agent": "commit-landscape"},
+                     "Content-Type": "application/json", "User-Agent": "ink-landscape"},
         )
         try:
             with urllib.request.urlopen(request, timeout=45) as response:
@@ -86,7 +86,7 @@ def fetch(user):
         "sample": False,
         "user": user,
         "metric": "contributions",
-        "description": "Daily GitHub profile contribution counts, including private contribution totals enabled on the profile. No private repository details are collected.",
+        "description": "Daily GitHub profile contribution counts available to the authenticated request, including private contribution totals. No private repository details are collected.",
         "source": {"url": f"https://github.com/{user}", "scope": "profile contribution calendar",
                    "api": "GitHub GraphQL contributionCalendar", "calendar_total": total},
         "start": str(start), "end": str(end),
@@ -96,7 +96,9 @@ def fetch(user):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--user", default=os.environ.get("GITHUB_REPOSITORY_OWNER", "bulletchicken"))
+    default_user = os.environ.get("LANDSCAPE_USER") or os.environ.get("GITHUB_REPOSITORY_OWNER")
+    parser.add_argument("--user", default=default_user, required=not default_user,
+                        help="GitHub username; defaults to LANDSCAPE_USER or the repository owner.")
     args = parser.parse_args()
     data = fetch(args.user)
     destination = ROOT / "data/activity.json"
