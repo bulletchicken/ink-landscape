@@ -2,12 +2,12 @@
   "sample": false,
   "user": "bulletchicken",
   "metric": "contributions",
-  "description": "Daily GitHub profile contribution counts, including private contribution totals enabled on the profile. No private repository details are collected.",
+  "description": "Daily GitHub profile contribution counts available to the authenticated request, including private contribution totals. No private repository details are collected.",
   "source": {
     "url": "https://github.com/bulletchicken",
     "scope": "profile contribution calendar",
     "api": "GitHub GraphQL contributionCalendar",
-    "calendar_total": 1834
+    "calendar_total": 1844
   },
   "start": "2025-10-26",
   "end": "2026-10-30",
@@ -1486,11 +1486,11 @@
     },
     {
       "date": "2026-10-29",
-      "contributions": 8
+      "contributions": 17
     },
     {
       "date": "2026-10-30",
-      "contributions": 0
+      "contributions": 1
     }
   ]
 }
