@@ -10,6 +10,8 @@ import xml.etree.ElementTree as ET
 NS = "http://www.w3.org/2000/svg"
 import palette
 
+SNOW_THRESHOLD = 160
+
 
 def add(parent, tag, attrs):
     return ET.SubElement(parent, f"{{{NS}}}{tag}", {k: str(v) for k, v in attrs.items()})
@@ -61,6 +63,73 @@ def ridge(height, half, seed, base):
         rough = 1 - .12 * (1 - noise(k * .78, seed / 91 + .1)) * distance ** .4
         points.append((u * half, base - height * shape * rough))
     return points
+
+
+def _snowcap(defs, parent, identifier, height, half, seed, base):
+    """Snow settles into uneven summit gullies without changing the terrain.
+
+    The cap is clipped twice: once to the actual mountain silhouette, then
+    to its own ragged snowline for the shaded folds and exposed rock seams.
+    Larger peaks carry deeper snow; all variation comes from the peak seed.
+    """
+    if height < SNOW_THRESHOLD:
+        return
+    rng = random.Random(seed + 2183)
+    maturity = min(1, (height - SNOW_THRESHOLD) / 100)
+    depth = height * (.13 + .12 * maturity)
+    summit = base - height
+    extent = half * .5
+    # Unequal broad tongues, rather than a row of regular zigzags. These
+    # channels continue the same slightly right-leaning rock planes below.
+    channels = [(-.12, .075, .20), (.025, .04, .27), (.11, .06, .39)]
+    phase = rng.uniform(-1, 1)
+
+    def snowline(x):
+        u = x / half
+        line = .83 + .09 * math.sin(u * 21 + phase) + .035 * math.sin(u * 91 + phase * 2)
+        for center, width, amount in channels:
+            line += amount * max(0, 1 - abs(u - center - phase * .013) / width)
+        return summit + depth * line
+
+    edge = [(extent * (-1 + k / 30), snowline(extent * (-1 + k / 30)))
+            for k in range(61)]
+    cap = [(-extent, summit - 3), (extent, summit - 3)] + edge[::-1]
+    snow = add(parent, "g", {
+        "data-snowcap": identifier, "data-snow-height": f"{height:.5f}",
+        "data-snow-depth": f"{depth:.5f}",
+        "clip-path": f"url(#{identifier}-clip)",
+    })
+    add(snow, "polygon", {"points": pts(cap), "fill": palette.SNOW,
+                           "opacity": palette.SNOW_OPACITY})
+    clip = add(defs, "clipPath", {"id": identifier + "-snow-clip"})
+    add(clip, "polygon", {"points": pts(cap)})
+    folds = add(snow, "g", {"clip-path": f"url(#{identifier}-snow-clip)"})
+    # A quiet shadow face and a narrow bright seam make the snow read as
+    # snow-covered rock rather than an opaque triangle pasted onto the peak.
+    fold = [(0, summit), (half * .018, summit + depth * .29),
+            (half * .008, summit + depth * .48), (half * .085, summit + depth * 1.2),
+            (half * .14, summit + depth * 1.3), (half * .045, summit + depth * .35)]
+    add(folds, "polygon", {"points": pts(fold), "fill": palette.SNOW_SHADE, "opacity": ".28"})
+    brush(folds, fold[:4], palette.SNOW_EDGE, .5, .30)
+    for u, length in [(-.085, .3), (.045, .28), (.13, .43)]:
+        x = half * (u + rng.uniform(-.012, .012))
+        bottom = snowline(x)
+        reach = depth * length
+        # A thin sliver of exposed rock reaches upward from each gully.
+        seam = [(x - half * .009, bottom + 3), (x - half * .012, bottom - reach * .36),
+                (x - half * .004, bottom - reach), (x + half * .008, bottom - reach * .22),
+                (x + half * .019, bottom + 3)]
+        add(folds, "polygon", {"points": pts(seam), "fill": palette.MOUNTAIN, "opacity": ".42"})
+        brush(folds, seam[1:4], palette.SNOW_EDGE, .4, .3)
+    # Broken lower edges and a few short contour traces leave plenty of
+    # untouched paper; the original silhouette remains the only outer rim.
+    for start, stop in [(17, 25), (27, 34), (37, 43)]:
+        brush(snow, edge[start:stop], palette.SNOW_EDGE, .52, .35)
+    for i in range(7):
+        x = rng.uniform(-half * .14, half * .13)
+        y = summit + depth * rng.uniform(.25, .81)
+        brush(folds, [(x, y), (x + 1.5, y + .8), (x + rng.uniform(3, 6), y + 1.2)],
+              palette.SNOW_SHADE, .36, .30)
 
 
 def paint_mountain(defs, parent, identifier, height, half, seed, base=535, detail=1):
@@ -118,5 +187,6 @@ def paint_mountain(defs, parent, identifier, height, half, seed, base=535, detai
         y = base - rng.uniform(.04, .54) * height
         brush(interior, [(x, y), (x + 3, y - 1), (x + rng.uniform(5, 11), y + 1)],
               palette.INK, rng.uniform(.3, .6), rng.uniform(.12, .25))
+    _snowcap(defs, interior, identifier, height, half, seed, base)
     brush(parent, rim, palette.INK, .82, palette.OUTLINE_OPACITY)
     return rim

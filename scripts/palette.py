@@ -13,6 +13,8 @@ THEMES = {
         "WATER": "#707070", "CLOUD": "#bababa",
         "GRID": ("#ededed", "#cfcfcf", "#969696", "#5b5b5b", "#1f1f1f"),
         "OUTLINE_OPACITY": .82,
+        "SNOW": "#ffffff", "SNOW_SHADE": "#b9b9b9", "SNOW_EDGE": "#646464",
+        "SNOW_OPACITY": .94,
     },
     "green": {
         "PAGE_BG": "#101919", "BG": "#101919", "INK": "#dbe4ce",
@@ -22,6 +24,8 @@ THEMES = {
         "WATER": "#89a795", "CLOUD": "#6f8e7d",
         "GRID": ("#25332e", "#405f4b", "#668563", "#94ad7d", "#d2dfaf"),
         "OUTLINE_OPACITY": .43,
+        "SNOW": "#c7d5c4", "SNOW_SHADE": "#6f897c", "SNOW_EDGE": "#526c5d",
+        "SNOW_OPACITY": .78,
     },
     "black": {
         "PAGE_BG": "#0e1116", "BG": "#171717", "INK": "#e3e3e3",
@@ -31,6 +35,8 @@ THEMES = {
         "WATER": "#9c9c9c", "CLOUD": "#808080",
         "GRID": ("#2e2e2e", "#505050", "#777777", "#a2a2a2", "#d6d6d6"),
         "OUTLINE_OPACITY": .43,
+        "SNOW": "#d4d4d4", "SNOW_SHADE": "#7a7a7a", "SNOW_EDGE": "#626262",
+        "SNOW_OPACITY": .78,
     },
 }
 

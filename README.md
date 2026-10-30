@@ -2,7 +2,7 @@
 
 Your GitHub contribution calendar, drawn as an endlessly drifting ink landscape.
 
-Mountains grow with monthly activity. Dates and totals travel with their peaks. Birds flap across the sky at different depths, while fish leave ripples that drift with the river. Clouds, reflected water, and brushwork trees complete the scene. The artwork is an animated SVG that works inside a normal GitHub README.
+Mountains grow with monthly activity, with irregular snow caps on the tallest peaks. Dates and totals travel with their mountains. Cloud wisps drift across the summits, birds flap at different depths, and fish leave ripples that move with the river. The artwork is an animated SVG that works inside a normal GitHub README.
 
 ## White paper
 
@@ -61,6 +61,7 @@ Private contribution totals follow what GitHub makes available through the crede
 
 - Each main mountain represents one calendar month. The first and last months may be partial.
 - Height grows with the **square of the monthly total**, relative to the busiest month. Above the small minimum height, totals of 150, 100, and 50 produce heights in the ratio **9:4:1**.
+- Taller peaks gain uneven snow caps with small shaded folds and exposed rock. Snow coverage follows the drawn height; it does not count a separate kind of activity. Cloud wisps pass in front of the upper slopes at different speeds, briefly veiling and revealing the summits.
 - Month/year labels, totals, and daily calendars scroll with their mountains. Exact dates remain in `data/activity.json` and in SVG tooltips when the image is opened directly.
 - The large counter beneath the scene sums contributions in the **displayed calendar window**. It is not a lifetime total.
 - Background peaks, trees, clouds, birds, and river life are decorative. A fish jumps every three seconds, visiting twenty locations per minute. Its expanding ripples drift downstream with the water after takeoff and landing.
@@ -99,7 +100,7 @@ python3 -m unittest discover -s tests -v
 | `scripts/fetch_activity.py` | Fetch and validate GitHub’s calendar |
 | `scripts/generate.py` | Compose the landscape and export themes |
 | `scripts/palette.py` | White, dark jade, and charcoal colors |
-| `scripts/terrain.py`, `vegetation.py`, `ambient.py`, `birds.py` | Mountains, plants, weather, river currents, and birds |
+| `scripts/terrain.py`, `vegetation.py`, `ambient.py`, `birds.py`, `summit_clouds.py` | Mountains and snow, plants, weather, river currents, and birds |
 
 ## Earlier versions and history
 

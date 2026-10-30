@@ -17,6 +17,7 @@ import xml.etree.ElementTree as ET
 
 from ambient import build_ambient
 from birds import build_birds
+from summit_clouds import build_summit_clouds
 from terrain import paint_mountain
 from vegetation import tree
 import palette
@@ -211,7 +212,7 @@ def render(data, theme="white"):
     root = ET.Element(f"{{{NS}}}svg", {"width": str(WIDTH), "height": str(HEIGHT), "viewBox": f"0 0 {WIDTH} {HEIGHT}", "role": "img", "aria-labelledby": "title desc", "data-theme": theme})
     add(root, "title", {"id": "title"}, "Monthly contributions — an ink mountain landscape")
     scope = "fictional contributions" if data.get("sample") else "GitHub profile contributions"
-    add(root, "desc", {"id": "desc"}, f"{total:,} {scope} across {active} active days, from {data['start']} to {data['end']}. Main mountain height grows with squared monthly contributions. Each month, count, and daily calendar travels with its mountain. The counter below sums contributions in this displayed calendar window. Fainter cragged peaks use the same drawing at different depths. Birds flap in front of and behind the main peaks. Brushwork trees, mist, reflections and river life are decorative. A fish jumps at a different spot every 3 seconds; its ripples drift with the river. The seamless scene repeats every 180 seconds. Reduced motion is supported.")
+    add(root, "desc", {"id": "desc"}, f"{total:,} {scope} across {active} active days, from {data['start']} to {data['end']}. Main mountain height grows with squared monthly contributions. Each month, count, and daily calendar travels with its mountain. The counter below sums contributions in this displayed calendar window. Taller peaks gather irregular snowcaps, and drifting foreground wisps cross their upper slopes. Fainter cragged peaks use the same drawing at different depths. Birds flap in front of and behind the main peaks. Snow, clouds, brushwork trees, mist, reflections and river life are decorative. A fish jumps at a different spot every 3 seconds; its ripples drift with the river. The seamless scene repeats every 180 seconds. Reduced motion is supported.")
     defs = add(root, "defs")
     style = add(root, "style")
     # The paper and sparse grain softly fade into the selected outer background.
@@ -282,6 +283,7 @@ def render(data, theme="white"):
     history = add(scene, "g", {"class": "history-track"})
     for offset in [0, PERIOD, 2 * PERIOD]:
         add(history, "use", {"href": "#history-tile", "x": offset})
+    summit_clouds = add(scene, "g", {"clip-path": "url(#art-clip)", "data-scene-layer": "summit-clouds"})
     close_birds = add(scene, "g", {"clip-path": "url(#art-clip)", "data-scene-layer": "birds-front"})
     foreground = add(scene, "g", {"clip-path": "url(#art-clip)"})
     add(foreground, "rect", {"x": 35, "y": 512, "width": 1130, "height": 24, "fill": "url(#base-mist)"})
@@ -291,6 +293,7 @@ def render(data, theme="white"):
     water = add(foreground, "g")
     ambient_css = build_ambient(defs, weather, water)
     bird_css = build_birds(defs, distant_birds, close_birds)
+    summit_css = build_summit_clouds(defs, summit_clouds)
     counter = add(root, "g", {"id": "contribution-total", "data-total-contributions": total,
                                "aria-label": f"{total:,} total contributions in the displayed calendar window"})
     label(counter, WIDTH / 2, 622, f"{total:,}", 46, palette.INK, SERIF, "middle")
@@ -298,7 +301,7 @@ def render(data, theme="white"):
           **{"letter-spacing": "1.8"})
     style.text = (CSS.replace("$START", str(-START)).replace("$END", str(-START - PERIOD))
                  .replace("$FAR", str(-FAR_PERIOD)).replace("$MID", str(-MID_PERIOD))
-                 .replace("$SHORE", str(-SHORE_PERIOD))) + ambient_css + bird_css
+                 .replace("$SHORE", str(-SHORE_PERIOD))) + ambient_css + bird_css + summit_css
     return root, heights
 
 

@@ -72,6 +72,53 @@ class LandscapeTests(unittest.TestCase):
         for _, records in self.renders[1:]:
             self.assertEqual(records, expected)
 
+    def test_snow_stays_on_high_peaks_without_changing_measured_terrain(self):
+        for theme, (root, _) in zip(("white", "green", "black"), self.renders):
+            with self.subTest(theme=theme):
+                mountains = {node.get("data-month"): node for node in root.iter()
+                             if node.get("data-month") is not None}
+                for month, mountain in mountains.items():
+                    caps = [node for node in mountain.iter() if node.get("data-snowcap") is not None]
+                    # This fixture has two low mountains and one full-height peak.
+                    self.assertEqual(bool(caps), month == "2026-03")
+                    height = float(mountain.get("data-height"))
+                    silhouette = mountain.find(SVG + "polygon")
+                    points = [tuple(map(float, pair.split(",")))
+                              for pair in silhouette.get("points").split()]
+                    self.assertAlmostEqual(generate.BASE - min(y for _, y in points), height, places=2)
+                    for cap in caps:
+                        identifier = mountain.get("id")
+                        self.assertEqual(cap.get("data-snowcap"), identifier)
+                        self.assertAlmostEqual(float(cap.get("data-snow-height")), height, places=2)
+                        self.assertEqual(cap.get("clip-path"), f"url(#{identifier}-clip)")
+                        self.assertTrue(any(node.get("id") == identifier + "-clip" for node in root.iter()))
+                decorative = [node for node in root.iter() if node.get("data-decorative-peak") is not None]
+                self.assertFalse(any(node.get("data-snowcap") is not None
+                                     for peak in decorative for node in peak.iter()))
+
+    def test_summit_clouds_cross_in_front_of_peaks_and_behind_near_birds(self):
+        root = self.renders[0][0]
+        scene = next(node for node in root.iter() if node.get("mask") == "url(#scene-fade)")
+        layers = list(scene)
+        clouds = next(node for node in layers if node.get("data-scene-layer") == "summit-clouds")
+        mountains = next(node for node in layers if node.get("class") == "history-track")
+        near_birds = next(node for node in layers if node.get("data-scene-layer") == "birds-front")
+        self.assertLess(layers.index(mountains), layers.index(clouds))
+        self.assertLess(layers.index(clouds), layers.index(near_birds))
+        lanes = [node for node in clouds.iter() if node.get("data-summit-cloud-lane") is not None]
+        self.assertTrue(lanes)
+        speeds = set()
+        for lane in lanes:
+            duration = float(lane.get("data-cloud-duration"))
+            distance = float(lane.get("data-cloud-period"))
+            speed = float(lane.get("data-cloud-speed"))
+            self.assertGreater(duration, 0)
+            self.assertGreater(distance, 0)
+            self.assertAlmostEqual(180 / duration, round(180 / duration))
+            self.assertAlmostEqual(speed, -distance / duration)
+            speeds.add(speed)
+        self.assertGreater(len(speeds), 1, "Cloud depths should move independently")
+
     def test_clean_labels_and_daily_calendars_travel_with_their_months(self):
         root = self.renders[0][0]
         text = [node.text for node in root.iter(SVG + "text")]
