@@ -76,7 +76,8 @@ class LandscapeTests(unittest.TestCase):
         root = self.renders[0][0]
         text = [node.text for node in root.iter(SVG + "text")]
         self.assertCountEqual(text, ["January 2026", "February 2026", "March 2026",
-                                     "50", "100", "150", *(["CONTRIBUTIONS"] * 3)])
+                                     "50", "100", "150", *(["CONTRIBUTIONS"] * 3),
+                                     "300", "TOTAL CONTRIBUTIONS"])
         tile = next(node for node in root.iter() if node.get("id") == "history-tile")
         mountains = {node.get("data-month"): node for node in root.iter()
                      if node.get("data-month") is not None}
@@ -85,6 +86,7 @@ class LandscapeTests(unittest.TestCase):
         for label in labels:
             month = label.get("data-label-month")
             mountain = mountains[month]
+            self.assertEqual(label.findall(SVG + "path"), [], "Month labels must not regain arrow markers")
             self.assertEqual(int(label.get("data-contributions")), MONTHS[month])
             self.assertEqual(label.get("data-contributions"), mountain.get("data-contributions"))
             self.assertEqual(label.get("data-center"), mountain.get("data-center"))
@@ -96,6 +98,65 @@ class LandscapeTests(unittest.TestCase):
         daily = [{"date": node.get("data-date"), "contributions": int(node.get("data-contributions"))}
                  for node in tile.iter(SVG + "rect") if node.get("data-date") is not None]
         self.assertEqual(daily, self.data["days"])
+
+    def test_counter_sums_the_displayed_window_and_stays_outside_the_scrolling_track(self):
+        data = copy.deepcopy(self.data)
+        for day in data["days"]:
+            day["contributions"] *= 10
+        for theme in BACKGROUNDS:
+            with self.subTest(theme=theme):
+                root, _ = generate.render(data, theme)
+                counter = next(node for node in root if node.get("id") == "contribution-total")
+                self.assertEqual(int(counter.get("data-total-contributions")),
+                                 sum(day["contributions"] for day in data["days"]))
+                self.assertEqual([node.text for node in counter.iter(SVG + "text")],
+                                 ["3,000", "TOTAL CONTRIBUTIONS"])
+                self.assertIn("displayed calendar window", counter.get("aria-label"))
+                self.assertIsNone(counter.get("transform"))
+
+    def test_bird_layers_straddle_the_main_mountains(self):
+        root = self.renders[0][0]
+        scene = next(node for node in root.iter() if node.get("mask") == "url(#scene-fade)")
+        layers = list(scene)
+        behind = next(node for node in layers if node.get("data-scene-layer") == "birds-behind")
+        front = next(node for node in layers if node.get("data-scene-layer") == "birds-front")
+        mountains = next(node for node in layers if node.get("class") == "history-track")
+        self.assertLess(layers.index(behind), layers.index(mountains))
+        self.assertLess(layers.index(mountains), layers.index(front))
+        for layer, depth in ((behind, "far"), (front, "near")):
+            birds = [node for node in layer.iter() if node.get("data-bird-depth") is not None]
+            self.assertTrue(birds, "Each side of the mountain layer must contain birds")
+            for bird in birds:
+                self.assertEqual(bird.get("data-bird-depth"), depth)
+                self.assertEqual({node.get("data-bird-wing") for node in bird.iter()
+                                  if node.get("data-bird-wing") is not None}, {"left", "right"})
+                for attribute in ("data-flight-duration", "data-flap-duration"):
+                    duration = float(bird.get(attribute))
+                    self.assertGreater(duration, 0)
+                    self.assertAlmostEqual(180 / duration, round(180 / duration))
+
+    def test_fish_wakes_follow_the_current_regardless_of_fish_heading(self):
+        root = self.renders[0][0]
+        parents = {child: node for node in root.iter() for child in node}
+        water = [node for node in root.iter() if node.get("data-water-depth") is not None]
+        currents = {float(node.get("data-current-speed")) for node in water}
+        self.assertTrue(currents)
+        self.assertTrue(all(speed < 0 for speed in currents), "Every river depth must flow left")
+        fish = [node for node in root.iter() if node.get("data-fish-index") is not None]
+        self.assertEqual({int(node.get("data-fish-direction")) for node in fish}, {-1, 1})
+        for anchor in fish:
+            wakes = [node for node in anchor.iter() if node.get("data-ripple-kind") is not None]
+            self.assertEqual({node.get("data-ripple-kind") for node in wakes}, {"takeoff", "landing"})
+            for wake in wakes:
+                speed = float(wake.get("data-current-speed"))
+                self.assertIn(speed, currents)
+                self.assertEqual(speed, float(anchor.get("data-current-speed")))
+                node = wake
+                while node is not anchor:
+                    # A wake inside the fish's mirrored coordinate frame would
+                    # reverse the same current when the fish jumps left.
+                    self.assertNotRegex(node.get("transform", ""), r"scale\(\s*-")
+                    node = parents[node]
 
     def test_cli_all_writes_six_self_contained_native_svgs(self):
         with tempfile.TemporaryDirectory() as directory:

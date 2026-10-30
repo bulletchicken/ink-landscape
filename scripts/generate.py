@@ -16,6 +16,7 @@ import random
 import xml.etree.ElementTree as ET
 
 from ambient import build_ambient
+from birds import build_birds
 from terrain import paint_mountain
 from vegetation import tree
 import palette
@@ -26,6 +27,7 @@ ET.register_namespace("", NS)
 SERIF = "Georgia, Times New Roman, serif"
 MONO = "ui-monospace, SFMono-Regular, Consolas, monospace"
 SPACING, BASE, MAX_HEIGHT = 210, 535, 260
+WIDTH, HEIGHT = 1200, 680
 PERIOD = 13 * SPACING
 CENTER = SPACING / 2
 START = 0  # render() centers the busiest month in each fetched window.
@@ -167,7 +169,6 @@ def month_labels(parent, month, index, peak_day):
     node = add(parent, "g", {"data-label-month": month["month"], "data-contributions": month["contributions"], "data-center": cx,
                                       "transform": f"translate({cx} 0)"})
     first = dt.date.fromisoformat(month["days"][0]["date"])
-    add(node, "path", {"d": "M0 622 L0 632 M-2 625 L0 623 L2 625", "stroke": palette.ACCENT, "stroke-width": ".8", "fill": "none", "opacity": ".65"})
     label(node, 0, 654, first.strftime("%B %Y"), 19, palette.INK, SERIF, "middle")
     label(node, -36, 696, f'{month["contributions"]}', 30, palette.INK, SERIF, "middle")
     label(node, -36, 715, "CONTRIBUTIONS", 8, palette.MUTED, anchor="middle", **{"letter-spacing": ".6"})
@@ -207,10 +208,10 @@ def render(data, theme="white"):
     actual_peak = max(m["contributions"] for m in months)
     peak = max(1, actual_peak)
     peak_day = max(d["contributions"] for d in data["days"])
-    root = ET.Element(f"{{{NS}}}svg", {"width": "1200", "height": "620", "viewBox": "0 0 1200 620", "role": "img", "aria-labelledby": "title desc", "data-theme": theme})
+    root = ET.Element(f"{{{NS}}}svg", {"width": str(WIDTH), "height": str(HEIGHT), "viewBox": f"0 0 {WIDTH} {HEIGHT}", "role": "img", "aria-labelledby": "title desc", "data-theme": theme})
     add(root, "title", {"id": "title"}, "Monthly contributions — an ink mountain landscape")
     scope = "fictional contributions" if data.get("sample") else "GitHub profile contributions"
-    add(root, "desc", {"id": "desc"}, f"{total:,} {scope} across {active} active days, from {data['start']} to {data['end']}. Main mountain height grows with squared monthly contributions. Each date, count, and daily calendar travels with its mountain. Fainter cragged peaks use the same drawing at different depths. Brushwork trees, mist, reflections and river life are decorative. A fish jumps at a different spot every 3 seconds. The seamless scene repeats every 180 seconds. Reduced motion is supported.")
+    add(root, "desc", {"id": "desc"}, f"{total:,} {scope} across {active} active days, from {data['start']} to {data['end']}. Main mountain height grows with squared monthly contributions. Each month, count, and daily calendar travels with its mountain. The counter below sums contributions in this displayed calendar window. Fainter cragged peaks use the same drawing at different depths. Birds flap in front of and behind the main peaks. Brushwork trees, mist, reflections and river life are decorative. A fish jumps at a different spot every 3 seconds; its ripples drift with the river. The seamless scene repeats every 180 seconds. Reduced motion is supported.")
     defs = add(root, "defs")
     style = add(root, "style")
     # The paper and sparse grain softly fade into the selected outer background.
@@ -223,8 +224,8 @@ def render(data, theme="white"):
         for offset, opacity in stops:
             add(gradient, "stop", {"offset": offset, "stop-color": "white", "stop-opacity": opacity})
         mask = add(defs, "mask", {"id": f"paper-mask-{axis}", "maskUnits": "userSpaceOnUse",
-                                  "x": 0, "y": 0, "width": 1200, "height": 620})
-        add(mask, "rect", {"width": 1200, "height": 620, "fill": f"url(#paper-fade-{axis})"})
+                                  "x": 0, "y": 0, "width": WIDTH, "height": HEIGHT})
+        add(mask, "rect", {"width": WIDTH, "height": HEIGHT, "fill": f"url(#paper-fade-{axis})"})
     for name, stops in [("mountain-wash", [(0, palette.WASH, .78), (1, palette.BG, .10)]),
                         ("base-mist", [(0, palette.BG, 0), (1, palette.BG, .45)]),
                         ("land-wash", [(0, palette.MOUNTAIN, 1), (1, palette.LAND_BOTTOM, 1)])]:
@@ -262,13 +263,13 @@ def render(data, theme="white"):
             add(tile, "use", {"href": f"#mountain-{index}", "x": cx + delta})
             add(reflections, "use", {"href": f"#mountain-{index}", "transform": f"translate({cx + delta} 632.25) scale(1 -.15)"})
         month_labels(tile, month, index, peak_day)
-    add(root, "rect", {"width": 1200, "height": 620, "fill": palette.PAGE_BG})
+    add(root, "rect", {"width": WIDTH, "height": HEIGHT, "fill": palette.PAGE_BG})
     paper_x = add(root, "g", {"mask": "url(#paper-mask-x)"})
     paper = add(paper_x, "g", {"mask": "url(#paper-mask-y)"})
-    add(paper, "rect", {"width": 1200, "height": 620, "fill": palette.BG})
+    add(paper, "rect", {"width": WIDTH, "height": HEIGHT, "fill": palette.BG})
     rng = random.Random(391)
     for _ in range(310):
-        add(paper, "circle", {"cx": f"{rng.uniform(0,1200):.1f}", "cy": f"{rng.uniform(0,620):.1f}", "r": f"{rng.uniform(.15,.55):.2f}", "fill": palette.INK, "opacity": ".035"})
+        add(paper, "circle", {"cx": f"{rng.uniform(0,WIDTH):.1f}", "cy": f"{rng.uniform(0,HEIGHT):.1f}", "r": f"{rng.uniform(.15,.55):.2f}", "fill": palette.INK, "opacity": ".035"})
     composition = add(root, "g", {"transform": "translate(0 -165)"})
     scene = add(composition, "g", {"mask": "url(#scene-fade)"})
     background = add(scene, "g", {"clip-path": "url(#art-clip)"})
@@ -277,9 +278,11 @@ def render(data, theme="white"):
         lane = add(background, "g", {"class": f"{name}-track"})
         for offset in [-period, 0, period, 2 * period]:
             add(lane, "use", {"href": f"#{name}-tile", "x": offset})
+    distant_birds = add(scene, "g", {"clip-path": "url(#art-clip)", "data-scene-layer": "birds-behind"})
     history = add(scene, "g", {"class": "history-track"})
     for offset in [0, PERIOD, 2 * PERIOD]:
         add(history, "use", {"href": "#history-tile", "x": offset})
+    close_birds = add(scene, "g", {"clip-path": "url(#art-clip)", "data-scene-layer": "birds-front"})
     foreground = add(scene, "g", {"clip-path": "url(#art-clip)"})
     add(foreground, "rect", {"x": 35, "y": 512, "width": 1130, "height": 24, "fill": "url(#base-mist)"})
     shore = add(foreground, "g", {"class": "shore-track"})
@@ -287,9 +290,15 @@ def render(data, theme="white"):
         add(shore, "use", {"href": "#shore-tile", "x": offset})
     water = add(foreground, "g")
     ambient_css = build_ambient(defs, weather, water)
+    bird_css = build_birds(defs, distant_birds, close_birds)
+    counter = add(root, "g", {"id": "contribution-total", "data-total-contributions": total,
+                               "aria-label": f"{total:,} total contributions in the displayed calendar window"})
+    label(counter, WIDTH / 2, 622, f"{total:,}", 46, palette.INK, SERIF, "middle")
+    label(counter, WIDTH / 2, 647, "TOTAL CONTRIBUTIONS", 10, palette.MUTED, anchor="middle",
+          **{"letter-spacing": "1.8"})
     style.text = (CSS.replace("$START", str(-START)).replace("$END", str(-START - PERIOD))
                  .replace("$FAR", str(-FAR_PERIOD)).replace("$MID", str(-MID_PERIOD))
-                 .replace("$SHORE", str(-SHORE_PERIOD))) + ambient_css
+                 .replace("$SHORE", str(-SHORE_PERIOD))) + ambient_css + bird_css
     return root, heights
 
 

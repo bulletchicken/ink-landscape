@@ -2,7 +2,7 @@
 
 Your GitHub contribution calendar, drawn as an endlessly drifting ink landscape.
 
-Mountains grow with monthly activity. Dates and totals travel with their peaks. Clouds, reflected water, brushwork trees, and jumping fish move at different speeds. The artwork is an animated SVG that works inside a normal GitHub README.
+Mountains grow with monthly activity. Dates and totals travel with their peaks. Birds flap across the sky at different depths, while fish leave ripples that drift with the river. Clouds, reflected water, and brushwork trees complete the scene. The artwork is an animated SVG that works inside a normal GitHub README.
 
 ## White paper
 
@@ -62,7 +62,9 @@ Private contribution totals follow what GitHub makes available through the crede
 - Each main mountain represents one calendar month. The first and last months may be partial.
 - Height grows with the **square of the monthly total**, relative to the busiest month. Above the small minimum height, totals of 150, 100, and 50 produce heights in the ratio **9:4:1**.
 - Month/year labels, totals, and daily calendars scroll with their mountains. Exact dates remain in `data/activity.json` and in SVG tooltips when the image is opened directly.
-- Background peaks, trees, clouds, and river life are decorative. A fish jumps every three seconds, visiting twenty locations per minute.
+- The large counter beneath the scene sums contributions in the **displayed calendar window**. It is not a lifetime total.
+- Background peaks, trees, clouds, birds, and river life are decorative. A fish jumps every three seconds, visiting twenty locations per minute. Its expanding ripples drift downstream with the water after takeoff and landing.
+- Smaller, fainter birds pass behind the main mountains; closer birds cross in front. Their wings flap as they travel, giving the sky another layer of depth.
 - The scene loops every 180 seconds. Reduced-motion preferences disable animation; the README embed also selects a still image.
 
 GitHub’s returned calendar defines the date window. The generator does not impose a separate 365-day cutoff or exclude the current day.
@@ -97,7 +99,7 @@ python3 -m unittest discover -s tests -v
 | `scripts/fetch_activity.py` | Fetch and validate GitHub’s calendar |
 | `scripts/generate.py` | Compose the landscape and export themes |
 | `scripts/palette.py` | White, dark jade, and charcoal colors |
-| `scripts/terrain.py`, `vegetation.py`, `ambient.py` | Mountains, plants, weather, and river animation |
+| `scripts/terrain.py`, `vegetation.py`, `ambient.py`, `birds.py` | Mountains, plants, weather, river currents, and birds |
 
 ## Earlier versions and history
 

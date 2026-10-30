@@ -117,13 +117,23 @@ def _clouds(defs, background_group):
         _add(high_lane, "use", {"href": "#ambient-high-wisp", "x": offset})
 
 
-def _river(water_group):
+def _river(defs, water_group):
     rng = random.Random(5602)
     ripples = _add(water_group, "g", {
         "data-ambient-layer": "moving-water", "aria-hidden": "true",
     })
-    # Sparse families of tapered brush marks give depth without turning the
-    # river into a grid of equal line segments. Broken echoes vary by cluster.
+    # The water translates continuously with the landscape. Separate wrapped
+    # lanes make nearby current faster; local mark breathing never reverses it.
+    tiles = {depth: _add(defs, "g", {"id": f"ambient-river-{depth}-tile"})
+             for depth in ("far", "near")}
+    for depth, duration in [("far", 90), ("near", 60)]:
+        lane = _add(ripples, "g", {
+            "class": f"ambient-motion ambient-river-flow ambient-river-{depth}",
+            "data-water-depth": depth, "data-current-speed": -1200 / duration,
+        })
+        for offset in [-1200, 0, 1200, 2400]:
+            _add(lane, "use", {"href": f"#ambient-river-{depth}-tile", "x": offset})
+    # Sparse tapered marks and broken echoes avoid a grid of equal segments.
     for i in range(21):
         x = 54 + i * 51 + rng.uniform(-22, 22)
         y = rng.uniform(563, 610)
@@ -132,7 +142,8 @@ def _river(water_group):
         thickness = .32 + depth * .48
         crest = rng.uniform(-1.4, -.4)
         period = 12 if depth < .35 else 9 if depth < .72 else 6
-        anchored = _add(ripples, "g", {"transform": f"translate({x:.2f} {y:.2f})"})
+        lane = tiles["far" if y < 589 else "near"]
+        anchored = _add(lane, "g", {"transform": f"translate({x:.2f} {y:.2f})"})
         mark = _add(anchored, "g", {
             "class": "ambient-motion ambient-wave",
             "style": f"animation-duration:{period}s;animation-delay:-{(i * 1.37) % period:.2f}s",
@@ -187,6 +198,12 @@ def _fish_marks(defs):
         "fill": "none", "stroke": palette.FISH, "stroke-width": ".6",
         "stroke-linecap": "round",
     })
+    _add(splash, "path", {
+        "d": "M-15 0 C-12 -3.5 -5 -4.1 1 -3.8 M7 -3 C12 -2.6 15 -1 15 0 "
+             "M-13 2 C-8 3.8 0 4.2 6 3.4 M10 2.8 l2.3 -.7",
+        "fill": "none", "stroke": palette.WATER, "stroke-width": ".38",
+        "stroke-linecap": "round", "opacity": ".5",
+    })
     droplets = _add(defs, "g", {"id": "ambient-fish-droplets"})
     for d in ["M-3 -1 q-3 -2 -3.6 -4.5", "M1 -1 q0 -3 1 -5", "M4 0 q2 -1.4 3 -3"]:
         _add(droplets, "path", {
@@ -213,27 +230,45 @@ def _fish_locations():
 
 
 def _fish(water_group, x, y, direction, scale, index):
-    # Negative phases place all jumps correctly in the very first cycle.
-    # CSS uses a sixty-second clock; its two-percent flight still lasts 1.2s.
+    # The fish may swim either way, but the surface current is always leftward.
+    # Keep drift outside the mirrored/scaled fish frame, in scene coordinates.
     phase = (FISH_PERIOD - index * FISH_INTERVAL) % FISH_PERIOD
     timing = f"animation-delay:-{phase:g}s"
+    speed = 1200 / (90 if y < 589 else 60)
+    jump_start = FISH_FIRST_JUMP + index * FISH_INTERVAL
     anchor = _add(water_group, "g", {
-        "transform": f"translate({x} {y}) scale({direction*scale:g} {scale:g})",
+        "transform": f"translate({x} {y})",
         "aria-hidden": "true", "data-ambient-layer": "occasional-fish",
-        "data-fish-index": index,
-        "data-fish-start": FISH_FIRST_JUMP + index * FISH_INTERVAL,
+        "data-fish-index": index, "data-fish-direction": direction,
+        "data-fish-start": jump_start, "data-current-speed": -speed,
     })
-    for class_name, mark, landing in [
-        ("ambient-fish", "ambient-fish-body", False),
-        ("ambient-takeoff", "ambient-fish-takeoff", False),
-        ("ambient-splash", "ambient-fish-landing", True),
-        ("ambient-droplets", "ambient-fish-droplets", True),
+    frame = _add(anchor, "g", {"transform": f"scale({direction*scale:g} {scale:g})"})
+    fish = _add(frame, "g", {
+        "class": "ambient-motion ambient-fish", "opacity": "0", "style": timing,
+    })
+    _add(fish, "use", {"href": "#ambient-fish-body"})
+
+    for kind, offset, born, lifetime in [
+        ("takeoff", 0, jump_start, 2.4),
+        ("landing", 48 * direction * scale, jump_start + 1.2, 3),
     ]:
-        parent = _add(anchor, "g", {"transform": "translate(48 0)"}) if landing else anchor
-        animated = _add(parent, "g", {
-            "class": f"ambient-motion {class_name}", "opacity": "0", "style": timing,
+        origin = _add(anchor, "g", {"transform": f"translate({offset:g} 0)"})
+        current = _add(origin, "g", {
+            "class": f"ambient-motion ambient-{kind}-flow",
+            "style": f"{timing};--wake-drift:{-speed*lifetime:.8f}px",
+            "data-ripple-kind": kind, "data-ripple-born-at": f"{born:g}",
+            "data-current-speed": -speed,
         })
-        _add(animated, "use", {"href": f"#{mark}"})
+        sized = _add(current, "g", {"transform": f"scale({scale:g})"})
+        classes = [("ambient-takeoff", "ambient-fish-takeoff")] if kind == "takeoff" else [
+            ("ambient-splash", "ambient-fish-landing"),
+            ("ambient-droplets", "ambient-fish-droplets"),
+        ]
+        for class_name, mark in classes:
+            animated = _add(sized, "g", {
+                "class": f"ambient-motion {class_name}", "opacity": "0", "style": timing,
+            })
+            _add(animated, "use", {"href": f"#{mark}"})
 
 
 def build_ambient(defs, background_group, water_group):
@@ -242,10 +277,11 @@ def build_ambient(defs, background_group, water_group):
     The caller can crop/translate the scene: original local coordinates are
     preserved (clouds y265..345, river marks y563..613). Tiny fish jump one
     at a time every three seconds, visiting twenty positions per minute.
-    Every flight takes 1.2 seconds. All motion repeats exactly at 180 seconds.
+    Every flight takes 1.2 seconds. Wake centers follow the two leftward river
+    currents while their rings expand and fade. All motion repeats at 180s.
     """
     _clouds(defs, background_group)
-    _river(water_group)
+    _river(defs, water_group)
     _fish_marks(defs)
     for index, (x, y, direction, scale) in enumerate(_fish_locations()):
         _fish(water_group, x, y, direction, scale, index)
@@ -263,10 +299,26 @@ CSS = """
   from { transform:translateX(0px); }
   to { transform:translateX(-600px); }
 }
+.ambient-river-flow { animation:ambient-river-drift 90s linear infinite; }
+.ambient-river-near { animation-duration:60s; }
+@keyframes ambient-river-drift {
+  from { transform:translateX(0px); }
+  to { transform:translateX(-1200px); }
+}
 .ambient-wave { opacity:.17; animation:ambient-water 12s ease-in-out infinite; }
 @keyframes ambient-water {
-  0%,100% { transform:translate(-8px,0px) scaleX(.84); opacity:.07; }
-  50% { transform:translate(12px,-.35px) scaleX(1.08); opacity:.27; }
+  0%,100% { transform:translateY(0px) scaleX(.91); opacity:.08; }
+  50% { transform:translateY(-.35px) scaleX(1.04); opacity:.25; }
+}
+.ambient-takeoff-flow { animation:ambient-takeoff-drift 60s linear infinite; }
+@keyframes ambient-takeoff-drift {
+  0%,2.5% { transform:translateX(0px); }
+  6.5%,100% { transform:translateX(var(--wake-drift)); }
+}
+.ambient-landing-flow { animation:ambient-landing-drift 60s linear infinite; }
+@keyframes ambient-landing-drift {
+  0%,4.5% { transform:translateX(0px); }
+  9.5%,100% { transform:translateX(var(--wake-drift)); }
 }
 .ambient-fish { animation:ambient-fish-jump 60s linear infinite; }
 @keyframes ambient-fish-jump {
@@ -285,23 +337,25 @@ CSS = """
 }
 .ambient-takeoff { animation:ambient-takeoff-ring 60s linear infinite; }
 @keyframes ambient-takeoff-ring {
-  0%,2.35% { opacity:0; transform:scale(.7); }
+  0%,2.495% { opacity:0; transform:scale(.7); }
   2.5% { opacity:.24; transform:scale(.85); }
-  2.85% { opacity:.15; transform:scale(1.25); }
-  3.65%,100% { opacity:0; transform:scale(1.8); }
+  3% { opacity:.17; transform:scale(1.3); }
+  4.5% { opacity:.08; transform:scale(1.9); }
+  6.5%,100% { opacity:0; transform:scale(2.7); }
 }
 .ambient-splash { animation:ambient-landing 60s linear infinite; }
 @keyframes ambient-landing {
-  0%,4.45% { opacity:0; transform:scale(.5); }
-  4.55% { opacity:.4; transform:scale(.65); }
-  5.15% { opacity:.23; transform:scale(1.3); }
-  6.5%,100% { opacity:0; transform:scale(2.5); }
+  0%,4.495% { opacity:0; transform:scale(.5); }
+  4.5% { opacity:.4; transform:scale(.65); }
+  5.15% { opacity:.28; transform:scale(1.25); }
+  6.5% { opacity:.14; transform:scale(2.15); }
+  9.5%,100% { opacity:0; transform:scale(3.4); }
 }
 .ambient-droplets { animation:ambient-droplet-fade 60s ease-out infinite; }
 @keyframes ambient-droplet-fade {
-  0%,4.45% { opacity:0; transform:translateY(0px); }
+  0%,4.495% { opacity:0; transform:translateY(0px); }
   4.55% { opacity:.45; transform:translateY(-1px); }
-  5.15%,100% { opacity:0; transform:translateY(2px); }
+  5.4%,100% { opacity:0; transform:translateY(2px); }
 }
 @media(prefers-reduced-motion:reduce) {
   .ambient-motion { animation:none !important; }
