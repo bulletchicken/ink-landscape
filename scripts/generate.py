@@ -210,8 +210,7 @@ def render(data):
     add(root, "desc", {"id": "desc"}, f"{total:,} {scope} across {active} active days, from {data['start']} to {data['end']}. Main mountain height grows with squared monthly commits. Each date, count, and daily calendar travels with its mountain. Fainter cragged peaks use the same drawing at different depths. Brushwork trees, mist, reflections and river life are decorative. A fish jumps at a different spot every 7.5 seconds. The seamless scene repeats every 180 seconds. Reduced motion is supported.")
     defs = add(root, "defs")
     style = add(root, "style")
-    # Fade the charcoal paper into the exact page color on all four sides.
-    # The drawing and labels retain their contrast; only the paper/grain fades.
+    # White paper extends to the edge; its sparse grain softly fades away.
     for axis, stops in [
         ("x", [(0, 0), (.004, 0), (.09, 1), (.91, 1), (.996, 0), (1, 0)]),
         ("y", [(0, 0), (.008, 0), (.12, 1), (.88, 1), (.992, 0), (1, 0)]),

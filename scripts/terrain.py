@@ -117,5 +117,5 @@ def paint_mountain(defs, parent, identifier, height, half, seed, base=535, detai
         y = base - rng.uniform(.04, .54) * height
         brush(interior, [(x, y), (x + 3, y - 1), (x + rng.uniform(5, 11), y + 1)],
               INK, rng.uniform(.3, .6), rng.uniform(.12, .25))
-    brush(parent, rim, INK, .82, .43)
+    brush(parent, rim, INK, .82, .82)
     return rim

@@ -7,7 +7,7 @@ The mountain contour and tapered brush techniques in this edition are adapted fr
 - Original artwork and algorithms: © 2018 Lingdong Huang.
 - License: MIT, reproduced below.
 
-This renderer adapts the original mountain-contour and tapered-stroke approach. It adds monthly public commit mapping, attached date labels, a dark palette, parallax, connected shoreline, brushwork vegetation, clouds, water reflections, and fish animation.
+This renderer adapts the original mountain-contour and tapered-stroke approach. It adds monthly public commit mapping, attached date labels, a monochrome palette, parallax, connected shoreline, brushwork vegetation, clouds, water reflections, and fish animation.
 
 Activity data comes from real public GitHub commit contributions. Main mountain heights encode monthly activity. Trees, background terrain, clouds, water, and fish are decorative and do not represent people, active days, or additional commits.
 
