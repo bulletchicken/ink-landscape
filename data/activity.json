@@ -7,39 +7,11 @@
     "url": "https://github.com/bulletchicken",
     "scope": "profile contribution calendar",
     "api": "GitHub GraphQL contributionCalendar",
-    "calendar_total": 2059
+    "calendar_total": 2052
   },
-  "start": "2025-11-16",
-  "end": "2026-11-21",
+  "start": "2025-11-23",
+  "end": "2026-11-23",
   "days": [
-    {
-      "date": "2025-11-16",
-      "contributions": 0
-    },
-    {
-      "date": "2025-11-17",
-      "contributions": 15
-    },
-    {
-      "date": "2025-11-18",
-      "contributions": 3
-    },
-    {
-      "date": "2025-11-19",
-      "contributions": 1
-    },
-    {
-      "date": "2025-11-20",
-      "contributions": 0
-    },
-    {
-      "date": "2025-11-21",
-      "contributions": 1
-    },
-    {
-      "date": "2025-11-22",
-      "contributions": 0
-    },
     {
       "date": "2025-11-23",
       "contributions": 0
@@ -1494,6 +1466,14 @@
     },
     {
       "date": "2026-11-21",
+      "contributions": 4
+    },
+    {
+      "date": "2026-11-22",
+      "contributions": 9
+    },
+    {
+      "date": "2026-11-23",
       "contributions": 1
     }
   ]
